@@ -1,0 +1,10 @@
+pandas>=1.4.0
+numpy
+matplotlib
+seaborn
+jupyterlab
+pyyaml
+# For mapping/geo visualizations
+geopandas
+plotly
+statsmodels

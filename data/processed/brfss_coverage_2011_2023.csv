@@ -1,0 +1,717 @@
+
+year,state,locationdesc,measure,value,ci_lower,ci_upper,sample_size
+2011,AK,Alaska,coverage,77.6,75.3,79.9,2303
+2011,AL,Alabama,coverage,77.8,76.2,79.5,4061
+2011,AR,Arkansas,coverage,70.7,67.9,73.4,2207
+2011,AZ,Arizona,coverage,77.6,75.0,80.2,3143
+2011,CA,California,coverage,78.5,77.5,79.5,10369
+2011,CO,Colorado,coverage,79.0,77.7,80.4,7835
+2011,CT,Connecticut,coverage,85.2,83.7,86.8,4085
+2011,DC,District of Columbia,coverage,91.5,89.8,93.1,2839
+2011,DE,Delaware,coverage,87.4,85.7,89.1,2808
+2011,FL,Florida,coverage,70.0,68.3,71.6,5602
+2011,GA,Georgia,coverage,71.0,69.3,72.8,5334
+2011,GU,Guam,coverage,69.8,66.9,72.8,1225
+2011,HI,Hawaii,coverage,88.6,87.3,90.0,4501
+2011,IA,Iowa,coverage,85.8,84.5,87.1,4218
+2011,ID,Idaho,coverage,73.5,71.3,75.7,3166
+2011,IL,Illinois,coverage,80.0,78.0,82.1,3132
+2011,IN,Indiana,coverage,76.4,74.9,77.9,4540
+2011,KS,Kansas,coverage,79.9,79.0,80.8,11775
+2011,KY,Kentucky,coverage,77.7,76.1,79.4,5925
+2011,LA,Louisiana,coverage,73.2,71.6,74.9,5511
+2011,MA,Massachusetts,coverage,92.3,91.5,93.0,14511
+2011,MD,Maryland,coverage,84.7,83.3,86.2,6341
+2011,ME,Maine,coverage,84.7,83.6,85.8,7705
+2011,MI,Michigan,coverage,81.7,80.4,83.0,6148
+2011,MN,Minnesota,coverage,86.5,85.5,87.6,10213
+2011,MO,Missouri,coverage,78.7,76.9,80.4,3401
+2011,MS,Mississippi,coverage,69.3,67.6,70.9,4393
+2011,MT,Montana,coverage,75.9,74.4,77.5,5486
+2011,NC,North Carolina,coverage,75.1,73.5,76.7,6078
+2011,ND,North Dakota,coverage,83.8,82.1,85.6,3153
+2011,NE,Nebraska,coverage,80.9,80.0,81.7,13965
+2011,NH,New Hampshire,coverage,84.0,82.5,85.5,3878
+2011,NJ,New Jersey,coverage,82.1,81.0,83.2,9157
+2011,NM,New Mexico,coverage,73.9,72.4,75.4,5048
+2011,NV,Nevada,coverage,67.9,65.2,70.6,2895
+2011,NY,New York,coverage,82.7,81.2,84.2,4643
+2011,OH,Ohio,coverage,83.2,81.8,84.5,5778
+2011,OK,Oklahoma,coverage,73.4,71.7,75.1,4304
+2011,OR,Oregon,coverage,77.4,75.6,79.2,3371
+2011,PA,Pennsylvania,coverage,84.4,83.2,85.6,6696
+2011,PR,Puerto Rico,coverage,88.8,87.6,90.0,4015
+2011,RI,Rhode Island,coverage,83.4,81.8,85.0,3829
+2011,SC,South Carolina,coverage,74.6,73.2,76.0,6590
+2011,SD,South Dakota,coverage,84.6,82.7,86.5,4803
+2011,TN,Tennessee,coverage,78.3,75.4,81.1,3025
+2011,TX,Texas,coverage,65.4,63.7,67.0,7218
+2011,US,"All States, DC and Territories (median) **",coverage,78.7,,,53
+2011,UT,Utah,coverage,78.4,77.2,79.5,7795
+2011,UW,All States and DC (median) **,coverage,78.7,,,51
+2011,VA,Virginia,coverage,82.3,80.5,84.0,3951
+2011,VT,Vermont,coverage,88.9,87.6,90.2,4371
+2011,WA,Washington,coverage,78.7,77.3,80.2,7998
+2011,WI,Wisconsin,coverage,85.1,83.3,86.9,3133
+2011,WV,West Virginia,coverage,75.0,73.1,76.9,2871
+2011,WY,Wyoming,coverage,75.3,73.4,77.2,3851
+2012,AK,Alaska,coverage,80.1,78.3,82.0,2838
+2012,AL,Alabama,coverage,76.5,74.8,78.2,4711
+2012,AR,Arkansas,coverage,68.9,66.7,71.1,2414
+2012,AZ,Arizona,coverage,75.3,73.2,77.4,3439
+2012,CA,California,coverage,74.9,73.7,76.1,8023
+2012,CO,Colorado,coverage,78.6,77.3,79.8,7063
+2012,CT,Connecticut,coverage,87.2,86.0,88.4,5238
+2012,DC,District of Columbia,coverage,90.3,88.4,92.2,2305
+2012,DE,Delaware,coverage,86.1,84.3,87.9,3034
+2012,FL,Florida,coverage,72.4,70.4,74.4,3428
+2012,GA,Georgia,coverage,72.7,70.7,74.6,3203
+2012,GU,Guam,coverage,73.4,70.6,76.2,1367
+2012,HI,Hawaii,coverage,87.3,85.9,88.7,4839
+2012,IA,Iowa,coverage,86.6,85.3,87.9,4087
+2012,ID,Idaho,coverage,76.6,74.2,79.0,2925
+2012,IL,Illinois,coverage,80.0,78.0,82.1,3085
+2012,IN,Indiana,coverage,78.2,76.8,79.7,4726
+2012,KS,Kansas,coverage,79.5,78.2,80.8,6585
+2012,KY,Kentucky,coverage,79.1,77.6,80.6,6270
+2012,LA,Louisiana,coverage,74.3,72.5,76.1,4363
+2012,MA,Massachusetts,coverage,93.1,92.4,93.7,14081
+2012,MD,Maryland,coverage,84.3,82.8,85.8,7579
+2012,ME,Maine,coverage,84.3,83.1,85.5,5728
+2012,MI,Michigan,coverage,83.4,82.2,84.7,5864
+2012,MN,Minnesota,coverage,86.8,85.8,87.8,7689
+2012,MO,Missouri,coverage,79.7,77.9,81.4,3471
+2012,MS,Mississippi,coverage,72.7,70.9,74.5,3750
+2012,MT,Montana,coverage,76.8,75.4,78.2,4548
+2012,NC,North Carolina,coverage,74.6,73.4,75.8,6225
+2012,ND,North Dakota,coverage,84.0,82.1,85.8,2859
+2012,NE,Nebraska,coverage,82.0,81.0,83.0,10469
+2012,NH,New Hampshire,coverage,84.2,82.6,85.8,4117
+2012,NJ,New Jersey,coverage,81.4,80.4,82.5,9249
+2012,NM,New Mexico,coverage,73.2,71.8,74.7,4697
+2012,NV,Nevada,coverage,69.8,67.5,72.1,2415
+2012,NY,New York,coverage,81.4,79.6,83.2,3597
+2012,OH,Ohio,coverage,82.3,81.1,83.4,7519
+2012,OK,Oklahoma,coverage,77.9,76.5,79.4,4341
+2012,OR,Oregon,coverage,76.7,74.8,78.7,2755
+2012,PA,Pennsylvania,coverage,83.8,82.8,84.8,11197
+2012,PR,Puerto Rico,coverage,90.2,89.1,91.3,4061
+2012,RI,Rhode Island,coverage,81.6,79.8,83.4,3175
+2012,SC,South Carolina,coverage,73.5,72.1,74.9,6380
+2012,SD,South Dakota,coverage,86.2,84.7,87.6,4773
+2012,TN,Tennessee,coverage,78.1,76.4,79.8,3731
+2012,TX,Texas,coverage,64.3,62.6,65.9,4478
+2012,US,"All States, DC and Territories (median) **",coverage,79.6,,,53
+2012,UT,Utah,coverage,79.6,78.4,80.8,7536
+2012,UW,All States and DC (median) **,coverage,79.6,,,51
+2012,VA,Virginia,coverage,81.8,80.3,83.3,4361
+2012,VT,Vermont,coverage,88.1,86.8,89.5,3614
+2012,WA,Washington,coverage,78.8,77.6,79.9,8472
+2012,WI,Wisconsin,coverage,85.3,83.5,87.1,3156
+2012,WV,West Virginia,coverage,75.8,74.0,77.5,2945
+2012,WY,Wyoming,coverage,75.2,72.9,77.5,3049
+2013,AK,Alaska,coverage,79.8,77.9,81.7,2967
+2013,AL,Alabama,coverage,78.8,76.8,80.8,3356
+2013,AR,Arkansas,coverage,71.7,69.4,73.9,2415
+2013,AZ,Arizona,coverage,74.7,71.6,77.8,2088
+2013,CA,California,coverage,79.7,78.5,80.9,6841
+2013,CO,Colorado,coverage,80.0,79.0,81.1,7811
+2013,CT,Connecticut,coverage,87.7,86.4,89.0,4669
+2013,DC,District of Columbia,coverage,90.2,88.3,92.0,2957
+2013,DE,Delaware,coverage,85.7,84.1,87.3,2937
+2013,FL,Florida,coverage,70.9,69.5,72.3,14670
+2013,GA,Georgia,coverage,72.7,71.1,74.4,4484
+2013,GU,Guam,coverage,72.3,69.5,75.1,1261
+2013,HI,Hawaii,coverage,90.0,89.0,91.1,4888
+2013,IA,Iowa,coverage,87.3,86.0,88.6,4653
+2013,ID,Idaho,coverage,75.9,73.9,78.0,2841
+2013,IL,Illinois,coverage,80.6,78.7,82.6,3227
+2013,IN,Indiana,coverage,79.1,77.8,80.4,5562
+2013,KS,Kansas,coverage,79.2,78.4,80.1,12908
+2013,KY,Kentucky,coverage,78.0,76.5,79.5,6111
+2013,LA,Louisiana,coverage,74.0,71.5,76.5,2702
+2013,MA,Massachusetts,coverage,92.8,91.9,93.6,9725
+2013,MD,Maryland,coverage,84.5,83.2,85.8,7673
+2013,ME,Maine,coverage,84.7,83.4,86.0,4494
+2013,MI,Michigan,coverage,82.6,81.4,83.8,7200
+2013,MN,Minnesota,coverage,87.1,85.9,88.3,9096
+2013,MO,Missouri,coverage,81.2,79.6,82.9,3638
+2013,MS,Mississippi,coverage,71.9,70.0,73.8,3575
+2013,MT,Montana,coverage,78.5,77.1,79.9,5240
+2013,NC,North Carolina,coverage,75.8,74.4,77.3,4560
+2013,ND,North Dakota,coverage,87.6,86.3,88.9,4690
+2013,NE,Nebraska,coverage,82.4,81.1,83.6,9430
+2013,NH,New Hampshire,coverage,84.4,82.9,85.9,3627
+2013,NJ,New Jersey,coverage,80.7,79.5,81.9,8091
+2013,NM,New Mexico,coverage,73.8,72.2,75.4,4898
+2013,NV,Nevada,coverage,72.7,69.9,75.5,2672
+2013,NY,New York,coverage,83.0,81.7,84.3,5354
+2013,OH,Ohio,coverage,83.3,82.1,84.6,6936
+2013,OK,Oklahoma,coverage,77.4,75.9,78.9,4241
+2013,OR,Oregon,coverage,75.0,73.0,77.0,3108
+2013,PA,Pennsylvania,coverage,84.8,83.7,85.9,6504
+2013,PR,Puerto Rico,coverage,91.8,90.7,92.9,3696
+2013,RI,Rhode Island,coverage,81.3,79.6,83.0,3714
+2013,SC,South Carolina,coverage,76.1,74.7,77.6,5395
+2013,SD,South Dakota,coverage,85.1,83.4,86.9,4117
+2013,TN,Tennessee,coverage,78.8,77.0,80.6,3068
+2013,TX,Texas,coverage,67.3,65.6,68.9,5220
+2013,US,"All States, DC and Territories (median) **",coverage,80.0,,,53
+2013,UT,Utah,coverage,80.8,79.7,81.9,7943
+2013,UW,All States and DC (median) **,coverage,80.0,,,51
+2013,VA,Virginia,coverage,81.6,80.2,83.0,4997
+2013,VT,Vermont,coverage,88.5,87.2,89.8,3829
+2013,WA,Washington,coverage,79.4,78.1,80.7,6078
+2013,WI,Wisconsin,coverage,85.8,84.2,87.5,3942
+2013,WV,West Virginia,coverage,76.3,74.6,77.9,3236
+2013,WY,Wyoming,coverage,76.4,74.5,78.4,3140
+2014,AK,Alaska,coverage,82.9,81.0,84.7,2882
+2014,AL,Alabama,coverage,82.5,81.1,84.0,4650
+2014,AR,Arkansas,coverage,79.8,77.5,82.1,2386
+2014,AZ,Arizona,coverage,82.1,80.6,83.5,7047
+2014,CA,California,coverage,82.2,81.0,83.5,5443
+2014,CO,Colorado,coverage,84.7,83.7,85.7,7803
+2014,CT,Connecticut,coverage,89.5,88.2,90.7,4748
+2014,DC,District of Columbia,coverage,90.4,88.1,92.7,2302
+2014,DE,Delaware,coverage,89.2,87.5,90.8,2413
+2014,FL,Florida,coverage,77.2,75.7,78.8,4475
+2014,GA,Georgia,coverage,75.0,73.1,76.9,3338
+2014,GU,Guam,coverage,73.3,70.4,76.2,1731
+2014,HI,Hawaii,coverage,90.2,89.0,91.5,4510
+2014,IA,Iowa,coverage,90.4,89.3,91.5,4719
+2014,ID,Idaho,coverage,79.8,77.9,81.7,2845
+2014,IL,Illinois,coverage,85.7,84.0,87.4,3042
+2014,IN,Indiana,coverage,82.0,80.7,83.2,6224
+2014,KS,Kansas,coverage,82.4,81.4,83.4,7899
+2014,KY,Kentucky,coverage,87.8,86.4,89.2,6573
+2014,LA,Louisiana,coverage,77.3,75.7,78.8,3725
+2014,MA,Massachusetts,coverage,94.6,93.8,95.4,9211
+2014,MD,Maryland,coverage,89.0,87.5,90.5,7223
+2014,ME,Maine,coverage,86.1,84.8,87.3,5025
+2014,MI,Michigan,coverage,87.3,86.1,88.5,4910
+2014,MN,Minnesota,coverage,91.2,90.5,91.9,10839
+2014,MO,Missouri,coverage,83.9,82.2,85.6,3667
+2014,MS,Mississippi,coverage,77.0,74.7,79.3,2133
+2014,MT,Montana,coverage,83.9,82.3,85.4,3961
+2014,NC,North Carolina,coverage,80.0,78.7,81.3,3908
+2014,ND,North Dakota,coverage,89.6,88.1,91.0,4519
+2014,NE,Nebraska,coverage,84.7,83.7,85.8,12653
+2014,NH,New Hampshire,coverage,85.8,84.1,87.4,3392
+2014,NJ,New Jersey,coverage,85.0,83.9,86.1,7801
+2014,NM,New Mexico,coverage,81.2,79.6,82.8,4960
+2014,NV,Nevada,coverage,79.2,76.6,81.9,2029
+2014,NY,New York,coverage,85.4,84.0,86.8,4131
+2014,OH,Ohio,coverage,87.5,86.1,88.8,6153
+2014,OK,Oklahoma,coverage,82.8,81.5,84.2,4592
+2014,OR,Oregon,coverage,86.5,84.8,88.1,2812
+2014,PA,Pennsylvania,coverage,87.3,86.1,88.5,6150
+2014,PR,Puerto Rico,coverage,92.8,91.7,93.8,3686
+2014,RI,Rhode Island,coverage,90.2,88.8,91.7,3900
+2014,SC,South Carolina,coverage,78.7,77.3,80.0,5708
+2014,SD,South Dakota,coverage,87.8,85.9,89.7,4312
+2014,TN,Tennessee,coverage,82.3,80.3,84.3,2624
+2014,TX,Texas,coverage,70.8,69.3,72.2,7610
+2014,US,"All States, DC and Territories (median) **",coverage,84.7,,,53
+2014,UT,Utah,coverage,83.8,82.9,84.7,9752
+2014,UW,All States and DC (median) **,coverage,84.7,,,51
+2014,VA,Virginia,coverage,84.2,82.9,85.6,5674
+2014,VT,Vermont,coverage,91.6,90.6,92.6,4246
+2014,WA,Washington,coverage,87.1,85.8,88.3,5736
+2014,WI,Wisconsin,coverage,89.6,88.2,91.0,4324
+2014,WV,West Virginia,coverage,87.0,85.6,88.3,3689
+2014,WY,Wyoming,coverage,81.5,79.3,83.7,2997
+2015,AK,Alaska,coverage,82.8,80.1,85.4,2327
+2015,AL,Alabama,coverage,83.6,82.1,85.2,4544
+2015,AR,Arkansas,coverage,84.8,82.4,87.2,2493
+2015,AZ,Arizona,coverage,82.4,80.6,84.1,3816
+2015,CA,California,coverage,86.5,85.6,87.3,8443
+2015,CO,Colorado,coverage,87.1,86.0,88.2,7876
+2015,CT,Connecticut,coverage,91.3,90.3,92.2,6898
+2015,DC,District of Columbia,coverage,93.4,91.2,95.4,2091
+2015,DE,Delaware,coverage,89.7,88.2,91.2,2201
+2015,FL,Florida,coverage,79.1,77.5,80.7,4400
+2015,GA,Georgia,coverage,79.2,77.1,81.4,2494
+2015,GU,Guam,coverage,76.7,73.4,80.1,1164
+2015,HI,Hawaii,coverage,91.2,90.0,92.5,4418
+2015,IA,Iowa,coverage,92.2,91.0,93.4,3607
+2015,ID,Idaho,coverage,82.5,80.7,84.3,3059
+2015,IL,Illinois,coverage,89.0,87.6,90.4,3174
+2015,IN,Indiana,coverage,86.0,84.3,87.7,3253
+2015,KS,Kansas,coverage,84.3,83.5,85.0,13297
+2015,KY,Kentucky,coverage,91.9,90.7,93.2,5430
+2015,LA,Louisiana,coverage,81.4,79.5,83.3,2586
+2015,MA,Massachusetts,coverage,94.0,93.2,94.8,6074
+2015,MD,Maryland,coverage,89.6,87.8,91.3,6867
+2015,ME,Maine,coverage,87.9,86.5,89.2,5082
+2015,MI,Michigan,coverage,88.0,86.9,89.2,5406
+2015,MN,Minnesota,coverage,92.7,92.0,93.4,10826
+2015,MO,Missouri,coverage,84.9,83.4,86.5,3850
+2015,MS,Mississippi,coverage,78.4,76.5,80.4,2986
+2015,MT,Montana,coverage,84.9,83.2,86.6,3182
+2015,NC,North Carolina,coverage,80.9,79.5,82.3,3849
+2015,ND,North Dakota,coverage,90.3,88.9,91.8,2891
+2015,NE,Nebraska,coverage,85.6,84.5,86.7,10066
+2015,NH,New Hampshire,coverage,91.2,89.9,92.5,3854
+2015,NJ,New Jersey,coverage,86.2,84.8,87.6,7045
+2015,NM,New Mexico,coverage,86.4,84.7,88.1,3789
+2015,NV,Nevada,coverage,82.3,79.5,85.1,1593
+2015,NY,New York,coverage,87.9,86.8,88.9,7384
+2015,OH,Ohio,coverage,89.8,88.6,91.1,6417
+2015,OK,Oklahoma,coverage,83.3,81.6,85.0,3505
+2015,OR,Oregon,coverage,89.8,88.5,91.2,2979
+2015,PA,Pennsylvania,coverage,90.0,88.6,91.3,3583
+2015,PR,Puerto Rico,coverage,91.5,90.3,92.6,3373
+2015,RI,Rhode Island,coverage,90.6,89.1,92.1,3545
+2015,SC,South Carolina,coverage,82.5,81.2,83.7,6085
+2015,SD,South Dakota,coverage,89.4,87.8,91.1,4102
+2015,TN,Tennessee,coverage,83.4,81.5,85.3,3182
+2015,TX,Texas,coverage,72.5,70.8,74.2,7048
+2015,US,"All States, DC and Territories (median) **",coverage,87.0,,,53
+2015,UT,Utah,coverage,86.7,85.7,87.6,7610
+2015,UW,All States and DC (median) **,coverage,87.0,,,51
+2015,VA,Virginia,coverage,87.0,85.8,88.2,5360
+2015,VT,Vermont,coverage,92.8,91.8,93.8,4134
+2015,WA,Washington,coverage,88.0,87.1,89.0,9114
+2015,WI,Wisconsin,coverage,90.8,89.4,92.2,3838
+2015,WV,West Virginia,coverage,90.4,89.3,91.5,3728
+2015,WY,Wyoming,coverage,83.0,80.9,85.1,2624
+2016,AK,Alaska,coverage,87.7,85.4,89.9,1859
+2016,AL,Alabama,coverage,84.0,82.4,85.5,4039
+2016,AR,Arkansas,coverage,87.0,84.7,89.3,2457
+2016,AZ,Arizona,coverage,84.5,82.8,86.2,5101
+2016,CA,California,coverage,87.2,86.3,88.0,7556
+2016,CO,Colorado,coverage,87.3,86.4,88.2,8591
+2016,CT,Connecticut,coverage,91.8,90.8,92.8,6327
+2016,DC,District of Columbia,coverage,94.1,92.8,95.4,2550
+2016,DE,Delaware,coverage,89.1,87.4,90.8,2331
+2016,FL,Florida,coverage,78.6,77.5,79.7,17325
+2016,GA,Georgia,coverage,79.7,77.9,81.5,2762
+2016,GU,Guam,coverage,76.2,72.4,80.0,1064
+2016,HI,Hawaii,coverage,91.7,90.6,92.8,4867
+2016,IA,Iowa,coverage,92.2,91.1,93.3,4171
+2016,ID,Idaho,coverage,81.1,79.0,83.1,2653
+2016,IL,Illinois,coverage,89.3,87.9,90.7,2882
+2016,IN,Indiana,coverage,86.4,85.1,87.7,5807
+2016,KS,Kansas,coverage,84.1,83.0,85.2,6725
+2016,KY,Kentucky,coverage,93.2,92.2,94.1,6486
+2016,LA,Louisiana,coverage,83.3,81.2,85.4,2718
+2016,MA,Massachusetts,coverage,93.2,92.2,94.2,5288
+2016,MD,Maryland,coverage,89.8,88.9,90.8,10613
+2016,ME,Maine,coverage,88.8,87.5,90.1,5501
+2016,MI,Michigan,coverage,90.2,89.2,91.0,7256
+2016,MN,Minnesota,coverage,92.3,91.7,92.9,10866
+2016,MO,Missouri,coverage,86.2,84.7,87.8,3615
+2016,MS,Mississippi,coverage,79.8,77.9,81.7,2766
+2016,MT,Montana,coverage,87.6,86.0,89.2,3219
+2016,NC,North Carolina,coverage,83.0,81.6,84.3,3784
+2016,ND,North Dakota,coverage,90.7,89.4,92.0,3351
+2016,NE,Nebraska,coverage,85.3,84.0,86.5,8588
+2016,NH,New Hampshire,coverage,91.7,90.5,93.0,3570
+2016,NJ,New Jersey,coverage,86.9,85.4,88.3,4495
+2016,NM,New Mexico,coverage,88.0,86.4,89.6,3421
+2016,NV,Nevada,coverage,82.1,80.2,84.1,2396
+2016,NY,New York,coverage,88.6,87.7,89.5,20493
+2016,OH,Ohio,coverage,91.6,90.6,92.6,7008
+2016,OK,Oklahoma,coverage,81.6,80.0,83.3,3517
+2016,OR,Oregon,coverage,88.6,87.3,90.0,3256
+2016,PA,Pennsylvania,coverage,91.5,90.3,92.6,4511
+2016,PR,Puerto Rico,coverage,91.0,89.6,92.3,3482
+2016,RI,Rhode Island,coverage,90.8,89.2,92.4,3291
+2016,SC,South Carolina,coverage,83.8,82.4,85.1,5693
+2016,SD,South Dakota,coverage,89.7,88.0,91.5,3299
+2016,TN,Tennessee,coverage,86.1,84.5,87.7,3422
+2016,TX,Texas,coverage,74.4,72.6,76.2,5584
+2016,US,"All States, DC and Territories (median) **",coverage,87.6,,,54
+2016,UT,Utah,coverage,86.7,85.5,87.8,6833
+2016,UW,All States and DC (median) **,coverage,87.7,,,51
+2016,VA,Virginia,coverage,86.3,85.1,87.4,5291
+2016,VI,Virgin Islands,coverage,65.0,59.8,70.2,570
+2016,VT,Vermont,coverage,93.8,92.7,94.8,4011
+2016,WA,Washington,coverage,89.4,88.6,90.3,8196
+2016,WI,Wisconsin,coverage,89.7,88.2,91.3,3169
+2016,WV,West Virginia,coverage,90.7,89.6,91.8,4480
+2016,WY,Wyoming,coverage,83.2,81.0,85.4,2287
+2017,AK,Alaska,coverage,87.7,85.4,90.0,1983
+2017,AL,Alabama,coverage,82.6,81.0,84.2,3565
+2017,AR,Arkansas,coverage,87.7,85.4,89.9,2331
+2017,AZ,Arizona,coverage,84.2,83.2,85.3,8008
+2017,CA,California,coverage,87.3,86.3,88.3,6168
+2017,CO,Colorado,coverage,86.7,85.7,87.7,5721
+2017,CT,Connecticut,coverage,90.2,89.2,91.3,6178
+2017,DC,District of Columbia,coverage,94.1,92.7,95.4,2525
+2017,DE,Delaware,coverage,87.5,85.8,89.2,2295
+2017,FL,Florida,coverage,79.1,77.6,80.6,10903
+2017,GA,Georgia,coverage,78.6,77.0,80.2,3125
+2017,GU,Guam,coverage,73.3,69.8,76.7,982
+2017,HI,Hawaii,coverage,92.2,91.1,93.2,4836
+2017,IA,Iowa,coverage,91.4,90.5,92.4,4639
+2017,ID,Idaho,coverage,80.4,78.3,82.5,2633
+2017,IL,Illinois,coverage,87.4,86.0,88.8,3218
+2017,IN,Indiana,coverage,87.2,86.2,88.1,7397
+2017,KS,Kansas,coverage,84.7,83.9,85.5,12567
+2017,KY,Kentucky,coverage,90.8,89.6,92.1,5370
+2017,LA,Louisiana,coverage,87.2,85.7,88.8,2945
+2017,MA,Massachusetts,coverage,93.7,92.5,94.8,4131
+2017,MD,Maryland,coverage,89.3,88.0,90.5,7344
+2017,ME,Maine,coverage,87.7,86.4,89.1,5215
+2017,MI,Michigan,coverage,90.2,89.2,91.1,6403
+2017,MN,Minnesota,coverage,90.3,89.6,91.1,10577
+2017,MO,Missouri,coverage,84.2,82.8,85.7,3958
+2017,MS,Mississippi,coverage,78.9,76.6,81.2,2540
+2017,MT,Montana,coverage,87.2,85.5,88.8,3257
+2017,NC,North Carolina,coverage,81.2,79.4,82.9,2807
+2017,ND,North Dakota,coverage,89.8,88.5,91.1,3985
+2017,NE,Nebraska,coverage,85.6,84.6,86.7,8551
+2017,NH,New Hampshire,coverage,91.1,89.5,92.6,3095
+2017,NJ,New Jersey,coverage,86.8,85.6,88.1,6499
+2017,NM,New Mexico,coverage,85.7,84.1,87.2,3563
+2017,NV,Nevada,coverage,80.6,78.2,83.0,1991
+2017,NY,New York,coverage,88.2,87.2,89.2,7457
+2017,OH,Ohio,coverage,90.4,89.4,91.4,6821
+2017,OK,Oklahoma,coverage,81.3,79.6,83.0,3322
+2017,OR,Oregon,coverage,87.8,86.5,89.2,3130
+2017,PA,Pennsylvania,coverage,91.5,90.3,92.7,4261
+2017,PR,Puerto Rico,coverage,92.3,91.1,93.6,2747
+2017,RI,Rhode Island,coverage,91.1,89.5,92.6,3277
+2017,SC,South Carolina,coverage,82.5,81.2,83.8,5478
+2017,SD,South Dakota,coverage,87.2,85.1,89.3,3897
+2017,TN,Tennessee,coverage,82.2,80.3,84.0,3275
+2017,TX,Texas,coverage,71.6,69.6,73.5,5753
+2017,US,"All States, DC and Territories (median) **",coverage,87.3,,,53
+2017,UT,Utah,coverage,85.6,84.5,86.6,6503
+2017,UW,All States and DC (median) **,coverage,87.3,,,51
+2017,VA,Virginia,coverage,86.8,85.5,88.0,5464
+2017,VT,Vermont,coverage,92.5,91.3,93.6,3853
+2017,WA,Washington,coverage,89.3,88.4,90.2,7679
+2017,WI,Wisconsin,coverage,91.0,89.6,92.5,3514
+2017,WV,West Virginia,coverage,88.7,87.3,90.2,3170
+2017,WY,Wyoming,coverage,82.6,80.8,84.4,2374
+2018,AK,Alaska,coverage,87.5,85.5,89.6,1634
+2018,AL,Alabama,coverage,83.8,82.1,85.4,3555
+2018,AR,Arkansas,coverage,85.2,83.2,87.2,2364
+2018,AZ,Arizona,coverage,84.3,82.5,86.1,4131
+2018,CA,California,coverage,86.2,85.2,87.0,7787
+2018,CO,Colorado,coverage,86.0,85.0,87.0,4999
+2018,CT,Connecticut,coverage,90.9,89.9,91.9,5976
+2018,DC,District of Columbia,coverage,94.1,92.9,95.4,2546
+2018,DE,Delaware,coverage,87.1,85.6,88.5,2808
+2018,FL,Florida,coverage,79.1,77.4,80.8,7077
+2018,GA,Georgia,coverage,78.2,77.0,79.5,4932
+2018,GU,Guam,coverage,77.5,74.2,80.9,1014
+2018,HI,Hawaii,coverage,91.9,91.0,92.9,4784
+2018,IA,Iowa,coverage,90.6,89.7,91.5,5530
+2018,ID,Idaho,coverage,80.4,78.2,82.7,1832
+2018,IL,Illinois,coverage,85.9,84.5,87.2,3218
+2018,IN,Indiana,coverage,86.3,84.9,87.6,3920
+2018,KS,Kansas,coverage,84.0,82.8,85.2,5776
+2018,KY,Kentucky,coverage,91.2,89.8,92.5,5220
+2018,LA,Louisiana,coverage,88.4,87.0,89.7,3235
+2018,MA,Massachusetts,coverage,92.4,91.3,93.5,4062
+2018,MD,Maryland,coverage,89.0,88.0,90.0,9179
+2018,ME,Maine,coverage,87.2,85.8,88.6,5070
+2018,MI,Michigan,coverage,91.0,90.1,91.9,6359
+2018,MN,Minnesota,coverage,90.5,89.8,91.2,10729
+2018,MO,Missouri,coverage,84.6,82.8,86.3,2970
+2018,MS,Mississippi,coverage,79.7,77.9,81.4,3161
+2018,MT,Montana,coverage,86.8,85.2,88.4,2807
+2018,NC,North Carolina,coverage,81.7,80.0,83.3,2610
+2018,ND,North Dakota,coverage,89.3,87.8,90.8,2930
+2018,NE,Nebraska,coverage,85.7,84.6,86.8,7914
+2018,NH,New Hampshire,coverage,90.5,89.0,92.1,2978
+2018,NJ,New Jersey,coverage,86.4,84.0,88.9,1893
+2018,NM,New Mexico,coverage,87.3,86.0,88.6,3841
+2018,NV,Nevada,coverage,83.2,80.9,85.6,1814
+2018,NY,New York,coverage,87.2,86.5,88.0,20783
+2018,OH,Ohio,coverage,91.4,90.4,92.4,7236
+2018,OK,Oklahoma,coverage,82.1,80.4,83.8,2690
+2018,OR,Oregon,coverage,88.1,87.0,89.3,3555
+2018,PA,Pennsylvania,coverage,90.6,89.3,92.0,3987
+2018,PR,Puerto Rico,coverage,89.6,88.2,91.1,3193
+2018,RI,Rhode Island,coverage,90.4,88.7,92.0,3233
+2018,SC,South Carolina,coverage,81.5,80.1,82.9,4873
+2018,SD,South Dakota,coverage,85.8,83.6,87.9,3789
+2018,TN,Tennessee,coverage,85.1,83.4,86.9,2967
+2018,TX,Texas,coverage,72.9,70.7,75.0,5442
+2018,US,"All States, DC and Territories (median) **",coverage,86.8,,,53
+2018,UT,Utah,coverage,85.0,84.0,86.0,6682
+2018,UW,All States and DC (median) **,coverage,86.8,,,51
+2018,VA,Virginia,coverage,86.0,84.8,87.2,5857
+2018,VT,Vermont,coverage,92.1,90.9,93.2,3646
+2018,WA,Washington,coverage,89.0,88.1,89.9,7102
+2018,WI,Wisconsin,coverage,88.8,87.2,90.3,2916
+2018,WV,West Virginia,coverage,89.9,88.5,91.3,2747
+2018,WY,Wyoming,coverage,81.8,80.0,83.7,2196
+2019,AK,Alaska,coverage,88.8,86.7,90.9,1800
+2019,AL,Alabama,coverage,82.5,80.9,84.1,3682
+2019,AR,Arkansas,coverage,83.1,81.1,85.2,2285
+2019,AZ,Arizona,coverage,81.3,79.4,83.2,4233
+2019,CA,California,coverage,85.0,84.0,85.9,7193
+2019,CO,Colorado,coverage,85.1,84.0,86.1,5087
+2019,CT,Connecticut,coverage,90.0,88.9,91.1,4924
+2019,DC,District of Columbia,coverage,91.4,89.6,93.2,1508
+2019,DE,Delaware,coverage,87.0,85.1,88.8,2135
+2019,FL,Florida,coverage,78.9,77.3,80.6,7567
+2019,GA,Georgia,coverage,77.2,75.3,79.2,3687
+2019,GU,Guam,coverage,77.7,74.6,80.8,1522
+2019,HI,Hawaii,coverage,91.4,90.4,92.4,4487
+2019,IA,Iowa,coverage,90.4,89.6,91.3,5728
+2019,ID,Idaho,coverage,79.4,77.2,81.7,2798
+2019,IL,Illinois,coverage,84.4,83.0,85.7,3295
+2019,IN,Indiana,coverage,86.6,85.4,87.8,4662
+2019,KS,Kansas,coverage,84.5,83.4,85.6,6262
+2019,KY,Kentucky,coverage,89.8,88.4,91.2,4682
+2019,LA,Louisiana,coverage,85.6,84.0,87.3,2905
+2019,MA,Massachusetts,coverage,92.6,91.6,93.5,4584
+2019,MD,Maryland,coverage,88.4,87.4,89.4,8939
+2019,ME,Maine,coverage,86.4,85.0,87.8,5123
+2019,MI,Michigan,coverage,88.9,87.8,90.0,5852
+2019,MN,Minnesota,coverage,90.2,89.4,90.9,9626
+2019,MO,Missouri,coverage,83.2,81.7,84.7,3595
+2019,MS,Mississippi,coverage,77.9,75.9,79.9,2632
+2019,MT,Montana,coverage,87.7,86.4,88.9,3533
+2019,NC,North Carolina,coverage,81.0,79.4,82.7,2481
+2019,ND,North Dakota,coverage,90.8,89.4,92.3,2893
+2019,NE,Nebraska,coverage,82.9,81.8,83.9,8130
+2019,NH,New Hampshire,coverage,89.6,88.0,91.1,2922
+2019,NM,New Mexico,coverage,85.9,84.3,87.6,3179
+2019,NV,Nevada,coverage,79.7,77.1,82.3,1557
+2019,NY,New York,coverage,86.4,85.4,87.5,7850
+2019,OH,Ohio,coverage,88.4,87.2,89.6,6851
+2019,OK,Oklahoma,coverage,80.9,79.4,82.5,3192
+2019,OR,Oregon,coverage,87.1,85.9,88.3,3619
+2019,PA,Pennsylvania,coverage,89.8,88.5,91.0,4146
+2019,PR,Puerto Rico,coverage,89.7,88.5,90.9,3845
+2019,RI,Rhode Island,coverage,89.9,88.3,91.5,3320
+2019,SC,South Carolina,coverage,82.5,81.0,84.1,3398
+2019,SD,South Dakota,coverage,85.1,82.7,87.5,3430
+2019,TN,Tennessee,coverage,82.1,80.4,83.9,3428
+2019,TX,Texas,coverage,71.6,69.7,73.5,5624
+2019,US,"All States, DC and Territories (median) **",coverage,86.4,,,52
+2019,UT,Utah,coverage,85.0,84.0,86.0,7182
+2019,UW,All States and DC (median) **,coverage,86.4,,,50
+2019,VA,Virginia,coverage,87.0,85.8,88.2,5573
+2019,VT,Vermont,coverage,92.9,91.7,94.1,3457
+2019,WA,Washington,coverage,88.1,87.2,89.0,7124
+2019,WI,Wisconsin,coverage,88.7,87.0,90.4,2725
+2019,WV,West Virginia,coverage,88.6,87.2,90.1,2795
+2019,WY,Wyoming,coverage,80.3,78.2,82.5,2034
+2020,AK,Alaska,coverage,87.1,85.1,89.0,2120
+2020,AL,Alabama,coverage,82.5,80.8,84.2,2873
+2020,AR,Arkansas,coverage,85.2,83.3,87.0,2267
+2020,AZ,Arizona,coverage,81.2,79.8,82.5,5233
+2020,CA,California,coverage,86.8,85.3,88.3,3096
+2020,CO,Colorado,coverage,85.5,84.5,86.5,5967
+2020,CT,Connecticut,coverage,89.1,87.8,90.4,5387
+2020,DC,District of Columbia,coverage,94.2,92.8,95.6,2117
+2020,DE,Delaware,coverage,86.8,85.1,88.6,2215
+2020,FL,Florida,coverage,77.4,75.3,79.4,5003
+2020,GA,Georgia,coverage,77.7,75.9,79.6,4435
+2020,GU,Guam,coverage,77.4,73.9,80.9,1369
+2020,HI,Hawaii,coverage,91.8,90.7,92.8,4699
+2020,IA,Iowa,coverage,90.5,89.6,91.4,5728
+2020,ID,Idaho,coverage,82.5,80.8,84.3,3291
+2020,IL,Illinois,coverage,88.8,86.8,90.7,2231
+2020,IN,Indiana,coverage,86.1,85.0,87.3,4654
+2020,KS,Kansas,coverage,85.2,84.0,86.3,5739
+2020,KY,Kentucky,coverage,89.7,88.0,91.4,2353
+2020,LA,Louisiana,coverage,86.4,84.6,88.1,2770
+2020,MA,Massachusetts,coverage,93.7,92.7,94.7,4524
+2020,MD,Maryland,coverage,88.8,87.9,89.7,8187
+2020,ME,Maine,coverage,88.6,87.3,89.8,5163
+2020,MI,Michigan,coverage,91.6,90.5,92.7,4124
+2020,MN,Minnesota,coverage,89.9,89.2,90.6,9962
+2020,MO,Missouri,coverage,84.2,82.9,85.5,4889
+2020,MS,Mississippi,coverage,78.2,76.4,79.9,3098
+2020,MT,Montana,coverage,88.5,87.3,89.7,3530
+2020,NC,North Carolina,coverage,81.1,79.6,82.6,3203
+2020,ND,North Dakota,coverage,89.6,87.8,91.4,2322
+2020,NE,Nebraska,coverage,84.9,83.8,86.0,7928
+2020,NH,New Hampshire,coverage,90.3,89.0,91.6,3261
+2020,NJ,New Jersey,coverage,85.9,84.9,87.0,6799
+2020,NM,New Mexico,coverage,85.5,83.8,87.2,3613
+2020,NV,Nevada,coverage,81.2,78.6,83.9,1374
+2020,NY,New York,coverage,87.4,86.5,88.4,8691
+2020,OH,Ohio,coverage,88.4,87.4,89.4,8386
+2020,OK,Oklahoma,coverage,80.4,78.6,82.1,2611
+2020,OR,Oregon,coverage,88.6,87.3,89.8,3248
+2020,PA,Pennsylvania,coverage,89.8,88.4,91.2,3593
+2020,PR,Puerto Rico,coverage,91.4,90.2,92.5,3485
+2020,RI,Rhode Island,coverage,91.3,89.9,92.8,3162
+2020,SC,South Carolina,coverage,82.1,80.1,84.2,2069
+2020,SD,South Dakota,coverage,87.2,84.8,89.7,3652
+2020,TN,Tennessee,coverage,83.7,81.8,85.6,2661
+2020,TX,Texas,coverage,70.8,68.8,72.8,5447
+2020,US,"All States, DC and Territories (median) **",coverage,86.8,,,53
+2020,UT,Utah,coverage,86.0,85.0,87.1,6606
+2020,UW,All States and DC (median) **,coverage,86.8,,,51
+2020,VA,Virginia,coverage,86.2,84.9,87.4,5255
+2020,VT,Vermont,coverage,91.7,90.4,93.0,3631
+2020,WA,Washington,coverage,88.6,87.7,89.5,7296
+2020,WI,Wisconsin,coverage,90.7,89.2,92.1,2954
+2020,WV,West Virginia,coverage,89.5,88.2,90.8,3215
+2020,WY,Wyoming,coverage,81.5,79.3,83.6,2038
+2021,AK,Alaska,coverage,89.1,87.4,90.8,3121
+2021,AL,Alabama,coverage,87.0,85.2,88.8,2449
+2021,AR,Arkansas,coverage,89.0,87.1,90.8,2118
+2021,AZ,Arizona,coverage,87.2,86.0,88.4,5640
+2021,CA,California,coverage,89.7,88.6,90.7,4277
+2021,CO,Colorado,coverage,87.9,87.0,88.8,6296
+2021,CT,Connecticut,coverage,92.8,91.8,93.7,5214
+2021,DC,District of Columbia,coverage,96.5,95.4,97.6,1981
+2021,DE,Delaware,coverage,90.2,88.6,91.9,2029
+2021,GA,Georgia,coverage,82.9,81.3,84.6,3873
+2021,GU,Guam,coverage,85.1,81.9,88.3,1057
+2021,HI,Hawaii,coverage,96.5,95.9,97.2,4686
+2021,IA,Iowa,coverage,92.6,91.8,93.5,5359
+2021,ID,Idaho,coverage,90.3,89.2,91.4,3811
+2021,IL,Illinois,coverage,92.0,90.3,93.8,1964
+2021,IN,Indiana,coverage,90.9,89.9,91.8,5514
+2021,KS,Kansas,coverage,88.7,87.9,89.5,9989
+2021,KY,Kentucky,coverage,94.5,93.5,95.6,3218
+2021,LA,Louisiana,coverage,92.5,91.2,93.8,2997
+2021,MA,Massachusetts,coverage,96.6,96.0,97.3,5178
+2021,MD,Maryland,coverage,91.0,90.1,91.9,8584
+2021,ME,Maine,coverage,92.9,92.0,93.8,5931
+2021,MI,Michigan,coverage,93.8,92.9,94.6,5302
+2021,MN,Minnesota,coverage,93.8,93.2,94.4,9945
+2021,MO,Missouri,coverage,87.7,86.5,88.8,6472
+2021,MS,Mississippi,coverage,86.7,85.0,88.4,2358
+2021,MT,Montana,coverage,90.6,89.4,91.8,3294
+2021,NC,North Carolina,coverage,86.6,85.2,88.0,2824
+2021,ND,North Dakota,coverage,92.3,91.1,93.6,3043
+2021,NE,Nebraska,coverage,89.6,88.7,90.6,8001
+2021,NH,New Hampshire,coverage,93.5,92.2,94.7,2966
+2021,NJ,New Jersey,coverage,89.0,88.0,89.9,4657
+2021,NM,New Mexico,coverage,89.9,88.6,91.2,3754
+2021,NV,Nevada,coverage,86.3,83.8,88.7,1459
+2021,NY,New York,coverage,92.4,91.9,93.0,21010
+2021,OH,Ohio,coverage,91.9,91.0,92.8,8081
+2021,OK,Oklahoma,coverage,85.6,84.1,87.2,2919
+2021,OR,Oregon,coverage,92.0,90.8,93.1,3354
+2021,PA,Pennsylvania,coverage,93.3,92.2,94.4,4153
+2021,PR,Puerto Rico,coverage,94.1,92.7,95.4,2697
+2021,RI,Rhode Island,coverage,93.4,92.2,94.6,3364
+2021,SC,South Carolina,coverage,86.2,84.9,87.6,4561
+2021,SD,South Dakota,coverage,91.2,89.2,93.1,3887
+2021,TN,Tennessee,coverage,88.4,86.9,89.9,2777
+2021,TX,Texas,coverage,75.8,73.9,77.6,5615
+2021,US,"All States, DC and Territories (median) **",coverage,90.9,,,53
+2021,UT,Utah,coverage,89.6,88.7,90.5,6456
+2021,UW,All States and DC (median) **,coverage,90.9,,,50
+2021,VA,Virginia,coverage,93.1,92.1,94.1,5465
+2021,VI,Virgin Islands,coverage,79.1,73.4,84.8,664
+2021,VT,Vermont,coverage,94.0,92.8,95.3,3704
+2021,WA,Washington,coverage,92.0,91.2,92.8,7053
+2021,WI,Wisconsin,coverage,94.3,93.1,95.5,3320
+2021,WV,West Virginia,coverage,91.7,90.6,92.8,3692
+2021,WY,Wyoming,coverage,83.2,81.0,85.4,1831
+2022,AK,Alaska,coverage,90.2,88.8,91.5,3320
+2022,AL,Alabama,coverage,87.2,85.2,89.2,2286
+2022,AR,Arkansas,coverage,87.4,85.7,89.2,2551
+2022,AZ,Arizona,coverage,86.0,84.4,87.6,4819
+2022,CA,California,coverage,91.4,90.5,92.3,6833
+2022,CO,Colorado,coverage,88.9,88.0,89.8,5742
+2022,CT,Connecticut,coverage,91.6,90.6,92.6,5682
+2022,DC,District of Columbia,coverage,96.7,95.6,97.7,1991
+2022,DE,Delaware,coverage,91.3,89.8,92.9,2097
+2022,FL,Florida,coverage,84.0,82.2,85.7,5915
+2022,GA,Georgia,coverage,84.1,82.7,85.5,4448
+2022,GU,Guam,coverage,84.6,81.0,88.2,1400
+2022,HI,Hawaii,coverage,97.1,96.5,97.7,4459
+2022,IA,Iowa,coverage,93.3,92.5,94.1,5011
+2022,ID,Idaho,coverage,89.7,88.5,90.9,3671
+2022,IL,Illinois,coverage,87.7,86.2,89.3,2496
+2022,IN,Indiana,coverage,91.2,90.3,92.1,5713
+2022,KS,Kansas,coverage,89.2,88.1,90.4,5830
+2022,KY,Kentucky,coverage,95.5,94.4,96.5,2548
+2022,LA,Louisiana,coverage,91.3,89.9,92.7,3119
+2022,MA,Massachusetts,coverage,97.3,96.8,97.8,7123
+2022,MD,Maryland,coverage,90.3,89.4,91.2,8793
+2022,ME,Maine,coverage,94.0,93.0,94.9,5318
+2022,MI,Michigan,coverage,94.4,93.6,95.3,5340
+2022,MN,Minnesota,coverage,93.9,93.3,94.6,10206
+2022,MO,Missouri,coverage,88.5,87.2,89.8,4138
+2022,MS,Mississippi,coverage,86.7,85.0,88.4,2593
+2022,MT,Montana,coverage,91.6,90.5,92.7,3561
+2022,NC,North Carolina,coverage,87.4,85.9,88.8,2750
+2022,ND,North Dakota,coverage,95.0,93.9,96.0,2328
+2022,NE,Nebraska,coverage,89.2,88.0,90.4,3671
+2022,NH,New Hampshire,coverage,93.5,92.3,94.8,2867
+2022,NJ,New Jersey,coverage,89.8,88.7,90.8,4870
+2022,NM,New Mexico,coverage,89.2,87.6,90.8,2357
+2022,NV,Nevada,coverage,84.5,82.3,86.7,1678
+2022,NY,New York,coverage,92.1,91.4,92.8,10056
+2022,OH,Ohio,coverage,92.7,91.9,93.6,9349
+2022,OK,Oklahoma,coverage,86.7,85.3,88.1,3274
+2022,OR,Oregon,coverage,92.9,91.8,93.9,3637
+2022,PA,Pennsylvania,coverage,93.7,92.4,95.0,2970
+2022,PR,Puerto Rico,coverage,95.2,94.2,96.2,3672
+2022,RI,Rhode Island,coverage,93.7,92.6,94.8,3217
+2022,SC,South Carolina,coverage,85.6,84.3,87.0,4542
+2022,SD,South Dakota,coverage,91.4,88.7,94.1,4195
+2022,TN,Tennessee,coverage,86.3,84.8,87.9,2863
+2022,TX,Texas,coverage,78.5,76.9,80.0,7186
+2022,US,"All States, DC and Territories (median) **",coverage,91.1,,,54
+2022,UT,Utah,coverage,89.4,88.4,90.4,5978
+2022,UW,All States and DC (median) **,coverage,91.2,,,51
+2022,VA,Virginia,coverage,91.0,89.8,92.2,5514
+2022,VI,Virgin Islands,coverage,73.4,64.6,82.2,653
+2022,VT,Vermont,coverage,94.5,93.6,95.5,4828
+2022,WA,Washington,coverage,92.2,91.6,92.8,14419
+2022,WI,Wisconsin,coverage,93.3,92.4,94.2,6053
+2022,WV,West Virginia,coverage,92.8,91.6,94.1,2718
+2022,WY,Wyoming,coverage,86.0,84.1,87.8,1943
+2023,AK,Alaska,coverage,90.8,89.5,92.1,3105
+2023,AL,Alabama,coverage,88.9,87.2,90.6,2327
+2023,AR,Arkansas,coverage,86.1,84.3,88.0,2541
+2023,AZ,Arizona,coverage,86.5,85.2,87.9,5380
+2023,CA,California,coverage,91.1,90.2,92.0,6728
+2023,CO,Colorado,coverage,88.4,87.4,89.4,5071
+2023,CT,Connecticut,coverage,90.5,89.4,91.6,5189
+2023,DC,District of Columbia,coverage,95.9,94.7,97.2,1924
+2023,DE,Delaware,coverage,91.4,89.8,92.9,2056
+2023,FL,Florida,coverage,84.6,82.8,86.3,5712
+2023,GA,Georgia,coverage,84.0,82.4,85.6,3829
+2023,GU,Guam,coverage,83.3,79.3,87.3,970
+2023,HI,Hawaii,coverage,97.0,96.2,97.7,4410
+2023,IA,Iowa,coverage,92.6,91.8,93.5,5017
+2023,ID,Idaho,coverage,88.6,87.3,89.8,3821
+2023,IL,Illinois,coverage,91.5,90.4,92.6,3232
+2023,IN,Indiana,coverage,90.9,89.9,91.8,5964
+2023,KS,Kansas,coverage,89.6,88.4,90.7,5472
+2023,LA,Louisiana,coverage,93.4,92.2,94.5,3206
+2023,MA,Massachusetts,coverage,96.5,95.7,97.2,5917
+2023,MD,Maryland,coverage,91.3,90.4,92.1,8671
+2023,ME,Maine,coverage,91.8,90.7,92.9,5456
+2023,MI,Michigan,coverage,94.1,93.2,95.0,5218
+2023,MN,Minnesota,coverage,93.1,92.4,93.8,9021
+2023,MO,Missouri,coverage,91.4,90.2,92.6,3973
+2023,MS,Mississippi,coverage,86.4,84.4,88.3,2436
+2023,MT,Montana,coverage,89.3,88.0,90.6,3465
+2023,NC,North Carolina,coverage,88.0,86.4,89.6,2416
+2023,ND,North Dakota,coverage,94.0,92.9,95.0,3021
+2023,NE,Nebraska,coverage,88.9,88.0,89.8,7057
+2023,NH,New Hampshire,coverage,94.7,93.6,95.8,2693
+2023,NJ,New Jersey,coverage,88.6,87.5,89.7,4875
+2023,NM,New Mexico,coverage,87.7,85.6,89.8,1565
+2023,NV,Nevada,coverage,82.8,79.5,86.0,1327
+2023,NY,New York,coverage,92.9,92.2,93.6,10384
+2023,OH,Ohio,coverage,92.2,91.2,93.2,7019
+2023,OK,Oklahoma,coverage,87.6,86.3,88.8,3837
+2023,OR,Oregon,coverage,92.5,91.4,93.6,3632
+2023,PR,Puerto Rico,coverage,94.1,92.9,95.3,3140
+2023,RI,Rhode Island,coverage,93.0,91.7,94.2,3156
+2023,SC,South Carolina,coverage,86.4,85.1,87.8,4570
+2023,SD,South Dakota,coverage,89.8,87.3,92.4,3053
+2023,TN,Tennessee,coverage,88.3,86.8,89.7,3085
+2023,TX,Texas,coverage,78.0,76.1,80.0,5177
+2023,US,"All States, DC and Territories (median) **",coverage,90.7,,,52
+2023,UT,Utah,coverage,89.7,88.8,90.6,6511
+2023,UW,All States and DC (median) **,coverage,90.8,,,49
+2023,VA,Virginia,coverage,89.9,88.4,91.5,3383
+2023,VI,Virgin Islands,coverage,78.7,74.5,82.8,914
+2023,VT,Vermont,coverage,94.8,93.8,95.8,4103
+2023,WA,Washington,coverage,91.2,90.6,91.8,14742
+2023,WI,Wisconsin,coverage,92.0,91.0,92.9,6071
+2023,WV,West Virginia,coverage,92.7,91.3,94.1,2265
+2023,WY,Wyoming,coverage,85.6,83.8,87.4,1851
