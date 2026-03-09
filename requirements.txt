@@ -8,3 +8,4 @@ pyyaml
 geopandas
 plotly
 statsmodels
+ipywidgets
