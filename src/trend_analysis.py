@@ -98,3 +98,56 @@ def compute_trend_slope(regional_ts: pd.DataFrame) -> pd.DataFrame:
         )
 
     return pd.DataFrame(records).sort_values("slope_pp_yr", ascending=False)
+
+
+def pivot_regional_trends(regional_ts: pd.DataFrame) -> pd.DataFrame:
+    """Reshape long-format regional trends into a wide cross-region matrix.
+
+    Rows = regions, columns = years, values = prevalence_pct.
+    This makes it easy to compare all regions side-by-side for any year.
+
+    Parameters
+    ----------
+    regional_ts : DataFrame
+        Output of ``compute_region_year_prevalence``.
+        Must contain columns: region, year, prevalence_pct.
+
+    Returns
+    -------
+    DataFrame with regions as the index and one column per year.
+    """
+    return regional_ts.pivot_table(
+        index="region",
+        columns="year",
+        values="prevalence_pct",
+        aggfunc="mean",
+    )
+
+
+def compute_rolling_avg(
+    regional_ts: pd.DataFrame, window: int = 3
+) -> pd.DataFrame:
+    """Compute a rolling-window average of prevalence per region.
+
+    Smooths year-to-year noise to reveal the underlying trend.
+
+    Parameters
+    ----------
+    regional_ts : DataFrame
+        Output of ``compute_region_year_prevalence``.
+        Must contain columns: region, year, prevalence_pct.
+    window : int
+        Number of years in the rolling window (default 3).
+
+    Returns
+    -------
+    Copy of ``regional_ts`` with an extra column ``rolling_avg``
+    containing the centred rolling mean. Rows where the window
+    cannot be fully applied have NaN in ``rolling_avg``.
+    """
+    out = regional_ts.sort_values(["region", "year"]).copy()
+    out["rolling_avg"] = (
+        out.groupby("region")["prevalence_pct"]
+        .transform(lambda s: s.rolling(window, center=True, min_periods=window).mean())
+    )
+    return out
