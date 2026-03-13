@@ -124,6 +124,37 @@ def pivot_regional_trends(regional_ts: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def pivot_measures_by_region(all_trends: pd.DataFrame, year: int) -> pd.DataFrame:
+    """Pivot all measures for a single year into a cross-region comparison.
+
+    Produces a table like:
+        region     obesity  coverage  smoking
+        Midwest      36.0      88.2     17.1
+        West         30.2      87.5     12.4
+        ...
+
+    Parameters
+    ----------
+    all_trends : DataFrame
+        Combined regional trends for ALL measures.
+        Must contain columns: region, year, measure, prevalence_pct.
+    year : int
+        The year to extract.
+
+    Returns
+    -------
+    DataFrame with regions as rows and one column per measure,
+    sorted by region name.
+    """
+    subset = all_trends[all_trends["year"] == year]
+    return subset.pivot_table(
+        index="region",
+        columns="measure",
+        values="prevalence_pct",
+        aggfunc="mean",
+    ).sort_index()
+
+
 def compute_rolling_avg(
     regional_ts: pd.DataFrame, window: int = 3
 ) -> pd.DataFrame:
