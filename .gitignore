@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data — keep raw/ and processed/ structure, but ignore large CSVs
+data/raw/
+data/processed/*.csv
+
+# Generated outputs (reproducible from pipeline)
+outputs/tables/*.csv
+outputs/figures/*.png
+outputs/*.csv
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
