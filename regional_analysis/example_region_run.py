@@ -21,11 +21,20 @@ from pathlib import Path
 import sys
 
 import matplotlib.pyplot as plt
+import pandas as pd
 
 from src.region_mapping import STATE_TO_REGION
 from src.utils import safe_read_csv, safe_write_csv
 from src.compute_prevalence import compute_state_prevalence
-from src.trend_analysis import compute_region_year_prevalence
+from src.trend_analysis import (
+    compare_covid_periods,
+    compute_convergence,
+    compute_region_year_prevalence,
+    compute_rolling_avg,
+    compute_trend_slope,
+    pivot_measures_by_region,
+    pivot_regional_trends,
+)
 
 
 def plot_regional_trend(regional_ts, region: str, measure: str, out_path: Path):
@@ -89,6 +98,49 @@ def run(region: str, measure: str, combined_path: Path, tables_dir: Path, figure
     regional_out = tables_dir / f"{region.lower()}_{measure.lower()}_regional_trends.csv"
     safe_write_csv(regional_ts, regional_out)
 
+    # Trend slope (linear fit per region)
+    slope_df = compute_trend_slope(regional_ts)
+    slope_out = tables_dir / f"{region.lower()}_{measure.lower()}_trend_slope.csv"
+    safe_write_csv(slope_df, slope_out)
+
+    # Pivot table (wide format: regions as rows, years as columns)
+    pivot_df = pivot_regional_trends(regional_ts)
+    pivot_out = tables_dir / f"{region.lower()}_{measure.lower()}_pivot.csv"
+    pivot_df.to_csv(pivot_out)  # keep region index as a column
+
+    # Rolling 3-year average
+    rolling_df = compute_rolling_avg(regional_ts, window=3)
+    rolling_out = tables_dir / f"{region.lower()}_{measure.lower()}_rolling_avg.csv"
+    safe_write_csv(rolling_df, rolling_out)
+
+    # Cross-measure pivot for the most recent year
+    # Build all-measure trends for this region, then pivot
+    all_measure_frames = []
+    for m in ["obesity", "coverage", "smoking"]:
+        m_ts = compute_region_year_prevalence(df[df["region"] == region], measure=m)
+        if not m_ts.empty:
+            all_measure_frames.append(m_ts)
+    if all_measure_frames:
+        all_trends = pd.concat(all_measure_frames, ignore_index=True)
+        latest_year = int(all_trends["year"].max())
+        cross_pivot = pivot_measures_by_region(all_trends, latest_year)
+        cross_out = tables_dir / f"{region.lower()}_cross_measure_{latest_year}.csv"
+        cross_pivot.to_csv(cross_out)
+        print(f"Wrote {cross_out}")
+
+    # Convergence + COVID comparison need ALL regions, not just one
+    all_region_ts = compute_region_year_prevalence(df, measure=measure)
+
+    # Convergence analysis (are regions converging or diverging?)
+    conv_df = compute_convergence(all_region_ts)
+    conv_out = tables_dir / f"{measure.lower()}_convergence.csv"
+    safe_write_csv(conv_df, conv_out)
+
+    # COVID period comparison (pre 2017-2019 vs post 2021-2023)
+    covid_df = compare_covid_periods(all_region_ts)
+    covid_out = tables_dir / f"{measure.lower()}_covid_comparison.csv"
+    safe_write_csv(covid_df, covid_out)
+
     # Figures
     regional_fig = figures_dir / f"{region.lower()}_{measure.lower()}_regional_trend.png"
     state_fig = figures_dir / f"{region.lower()}_{measure.lower()}_state_trends.png"
@@ -97,6 +149,11 @@ def run(region: str, measure: str, combined_path: Path, tables_dir: Path, figure
 
     print(f"Wrote {state_out} (rows={len(state_prev)})")
     print(f"Wrote {regional_out} (rows={len(regional_ts)})")
+    print(f"Wrote {slope_out}")
+    print(f"Wrote {pivot_out}")
+    print(f"Wrote {rolling_out}")
+    print(f"Wrote {conv_out}")
+    print(f"Wrote {covid_out}")
     print(f"Wrote {regional_fig}")
     print(f"Wrote {state_fig}")
 
