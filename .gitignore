@@ -17,9 +17,8 @@ env/
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 
-# Data — keep raw/ and processed/ structure, but ignore large CSVs
+# Data — raw files are large/sensitive; processed CSV is committed for reproducibility
 data/raw/
-data/processed/*.csv
 
 # Generated outputs (reproducible from pipeline)
 outputs/tables/*.csv

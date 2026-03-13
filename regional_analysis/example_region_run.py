@@ -27,6 +27,8 @@ from src.region_mapping import STATE_TO_REGION
 from src.utils import safe_read_csv, safe_write_csv
 from src.compute_prevalence import compute_state_prevalence
 from src.trend_analysis import (
+    compare_covid_periods,
+    compute_convergence,
     compute_region_year_prevalence,
     compute_rolling_avg,
     compute_trend_slope,
@@ -126,6 +128,19 @@ def run(region: str, measure: str, combined_path: Path, tables_dir: Path, figure
         cross_pivot.to_csv(cross_out)
         print(f"Wrote {cross_out}")
 
+    # Convergence + COVID comparison need ALL regions, not just one
+    all_region_ts = compute_region_year_prevalence(df, measure=measure)
+
+    # Convergence analysis (are regions converging or diverging?)
+    conv_df = compute_convergence(all_region_ts)
+    conv_out = tables_dir / f"{measure.lower()}_convergence.csv"
+    safe_write_csv(conv_df, conv_out)
+
+    # COVID period comparison (pre 2017-2019 vs post 2021-2023)
+    covid_df = compare_covid_periods(all_region_ts)
+    covid_out = tables_dir / f"{measure.lower()}_covid_comparison.csv"
+    safe_write_csv(covid_df, covid_out)
+
     # Figures
     regional_fig = figures_dir / f"{region.lower()}_{measure.lower()}_regional_trend.png"
     state_fig = figures_dir / f"{region.lower()}_{measure.lower()}_state_trends.png"
@@ -137,6 +152,8 @@ def run(region: str, measure: str, combined_path: Path, tables_dir: Path, figure
     print(f"Wrote {slope_out}")
     print(f"Wrote {pivot_out}")
     print(f"Wrote {rolling_out}")
+    print(f"Wrote {conv_out}")
+    print(f"Wrote {covid_out}")
     print(f"Wrote {regional_fig}")
     print(f"Wrote {state_fig}")
 

@@ -182,3 +182,79 @@ def compute_rolling_avg(
         .transform(lambda s: s.rolling(window, center=True, min_periods=window).mean())
     )
     return out
+
+
+def compute_convergence(regional_ts: pd.DataFrame) -> pd.DataFrame:
+    """Measure whether regions are converging or diverging over time.
+
+    For each year, computes ``np.std`` of prevalence across regions.
+    A declining std means regions are converging; rising means diverging.
+
+    Parameters
+    ----------
+    regional_ts : DataFrame
+        Must contain columns: year, prevalence_pct (with multiple regions).
+
+    Returns
+    -------
+    DataFrame with columns: year, regional_std, trend
+        trend is 'converging' if std decreased from first to last year,
+        'diverging' otherwise.
+    """
+    yearly_std = (
+        regional_ts.groupby("year")["prevalence_pct"]
+        .agg(lambda vals: float(np.std(vals.to_numpy(), ddof=0)))
+        .reset_index(name="regional_std")
+        .sort_values("year")
+    )
+    if len(yearly_std) >= 2:
+        first = yearly_std["regional_std"].iloc[0]
+        last = yearly_std["regional_std"].iloc[-1]
+        yearly_std["trend"] = "converging" if last < first else "diverging"
+    else:
+        yearly_std["trend"] = "insufficient data"
+    return yearly_std
+
+
+def compare_covid_periods(
+    regional_ts: pd.DataFrame,
+    pre: tuple[int, int] = (2017, 2019),
+    post: tuple[int, int] = (2021, 2023),
+) -> pd.DataFrame:
+    """Compare pre-COVID vs post-COVID prevalence per region.
+
+    Computes the mean prevalence for each period, then merges them
+    side-by-side with a delta column.
+
+    Parameters
+    ----------
+    regional_ts : DataFrame
+        Must contain columns: region, year, prevalence_pct.
+    pre : tuple
+        (start_year, end_year) for the pre-COVID window.
+    post : tuple
+        (start_year, end_year) for the post-COVID window.
+
+    Returns
+    -------
+    DataFrame with columns:
+        region, pre_avg, post_avg, delta, pct_change
+    """
+    pre_df = (
+        regional_ts[regional_ts["year"].between(pre[0], pre[1])]
+        .groupby("region", as_index=False)["prevalence_pct"]
+        .mean()
+        .rename(columns={"prevalence_pct": "pre_avg"})
+    )
+    post_df = (
+        regional_ts[regional_ts["year"].between(post[0], post[1])]
+        .groupby("region", as_index=False)["prevalence_pct"]
+        .mean()
+        .rename(columns={"prevalence_pct": "post_avg"})
+    )
+    merged = pd.merge(pre_df, post_df, on="region", how="outer")
+    merged["delta"] = (merged["post_avg"] - merged["pre_avg"]).round(2)
+    merged["pct_change"] = (
+        (merged["delta"] / merged["pre_avg"]) * 100
+    ).round(2)
+    return merged.sort_values("delta", ascending=False)
