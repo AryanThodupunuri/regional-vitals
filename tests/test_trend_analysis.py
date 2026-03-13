@@ -80,9 +80,9 @@ def test_slope_single_point():
 # compute_convergence
 # ---------------------------------------------------------------------------
 
-def test_convergence_diverging(simple_ts):
+def test_convergence_converging(simple_ts):
     """A starts at 10, B starts at 30 (std=10); A ends at 14, B ends at 28 (std=7).
-    std decreases → converging."""
+    std decreases 10→7 → converging."""
     result = compute_convergence(simple_ts)
     assert result["trend"].iloc[0] == "converging"
 
