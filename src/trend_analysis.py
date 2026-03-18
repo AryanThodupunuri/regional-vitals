@@ -258,3 +258,100 @@ def compare_covid_periods(
         (merged["delta"] / merged["pre_avg"]) * 100
     ).round(2)
     return merged.sort_values("delta", ascending=False)
+
+
+def compare_covid_periods_by_measure(
+    df: pd.DataFrame,
+    pre: tuple[int, int] = (2017, 2019),
+    post: tuple[int, int] = (2021, 2023),
+    region_col: str = "region",
+    year_col: str = "year",
+    measure_col: str = "measure",
+    value_col: str = "prevalence_pct",
+) -> pd.DataFrame:
+    """Compare pre-COVID vs post-COVID prevalence for each region/measure.
+
+    Parameters
+    ----------
+    df : DataFrame
+        Long-format DataFrame containing region, year, measure,
+        and prevalence columns.
+    pre : tuple[int, int]
+        Inclusive pre-COVID year window.
+    post : tuple[int, int]
+        Inclusive post-COVID year window.
+    region_col : str
+        Name of the region column.
+    year_col : str
+        Name of the year column.
+    measure_col : str
+        Name of the measure column.
+    value_col : str
+        Name of the prevalence/value column.
+
+    Returns
+    -------
+    DataFrame
+        Columns:
+        measure, region, pre_avg, post_avg, delta, pct_change
+    """
+    required_regions = ["Northeast", "Southeast", "Midwest", "Southwest", "West"]
+    required_measures = ["coverage", "obesity", "smoking"]
+
+    required_cols = {region_col, year_col, measure_col, value_col}
+    missing = required_cols - set(df.columns)
+    if missing:
+        raise ValueError(f"Missing required columns: {sorted(missing)}")
+
+    data = df.copy()
+
+    data = data[
+        data[region_col].isin(required_regions)
+        & data[measure_col].isin(required_measures)
+    ].copy()
+
+    results = []
+
+    for measure in required_measures:
+        measure_df = data[data[measure_col] == measure].copy()
+
+        if measure_df.empty:
+            continue
+
+        regional_ts = measure_df.rename(
+            columns={
+                region_col: "region",
+                year_col: "year",
+                value_col: "prevalence_pct",
+            }
+        )[["region", "year", "prevalence_pct"]]
+
+        comparison = compare_covid_periods(
+            regional_ts=regional_ts,
+            pre=pre,
+            post=post,
+        )
+
+        comparison.insert(0, "measure", measure)
+        results.append(comparison)
+
+    if not results:
+        return pd.DataFrame(
+            columns=["measure", "region", "pre_avg", "post_avg", "delta", "pct_change"]
+        )
+
+    final = pd.concat(results, ignore_index=True)
+
+    final["region"] = pd.Categorical(
+        final["region"],
+        categories=required_regions,
+        ordered=True,
+    )
+    final["measure"] = pd.Categorical(
+        final["measure"],
+        categories=required_measures,
+        ordered=True,
+    )
+
+    final = final.sort_values(["measure", "region"]).reset_index(drop=True)
+    return final
