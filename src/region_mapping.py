@@ -11,7 +11,7 @@ REGIONS = {
     "Midwest": [
         "IL","IN","MI","OH","WI","IA","KS","MN","MO","NE","ND","SD"
     ],
-    "SouthEast": [
+    "Southeast": [
         "DE","DC","FL","GA","MD","NC","SC","VA","WV","AL","KY","MS","TN","AR","LA"
     ],
     "Southwest": [
