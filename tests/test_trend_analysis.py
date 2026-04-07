@@ -169,7 +169,62 @@ def test_rolling_avg_edge_nan():
     assert np.isnan(result[result["year"] == 2011].iloc[0]["rolling_avg"])
     assert np.isnan(result[result["year"] == 2015].iloc[0]["rolling_avg"])
 
+def test_rolling_avg_window_larger_than_group():
+    ts = pd.DataFrame([
+        {"region": "A", "year": 2011, "prevalence_pct": 10.0, "measure": "obesity"},
+        {"region": "A", "year": 2012, "prevalence_pct": 20.0, "measure": "obesity"}
+    ])
 
+    # there are only 2 rows in the dataframe, but the window is 3
+    result=compute_rolling_avg(ts, window=3)
+
+    assert result["rolling_avg"].isna().all()
+
+def test_rolling_avg_window_one():
+    ts = pd.DataFrame(
+        {"region": "A", "year": 2011, "prevalence_pct": 5.0, "measure": "obesity"},
+        {"region": "A", "year": 2012, "prevalence_pct": 10.0, "measure": "obesity"},
+        {"region": "A", "year": 2013, "prevalence_pct": 15.0, "measure": "obesity"}
+    )
+    result=compute_rolling_avg(ts,window=1)
+
+    # since the window is one, rolling average is identical to raw data point
+    assert np.allclose(
+        result["rolling_avg"],
+        result["prevalence_pct"]
+    )
+
+def test_rolling_avg_multiple_regions():
+    ts=pd.DataFrame([
+        {"region": "A", "year": 2011, "prevalence_pct": 10.0, "measure": "obesity"},
+        {"region": "A", "year": 2012, "prevalence_pct": 20.0, "measure": "obesity"},
+        {"region": "A", "year": 2013, "prevalence_pct": 30.0, "measure": "obesity"},
+        {"region": "B", "year": 2011, "prevalence_pct": 100.0, "measure": "obesity"},
+        {"region": "B", "year": 2012, "prevalence_pct": 200.0, "measure": "obesity"},
+        {"region": "B", "year": 2013, "prevalence_pct": 300.0, "measure": "obesity"}
+    ])
+
+    result=compute_rolling_avg(ts,window=3)
+
+    # result separated by region
+    a_mid=result[(result["region"]=="A") & (result["year"]==2012)].iloc[0]
+    b_mid=result[(result["region"]=="B") & (result["year"]==2012)].iloc[0]
+
+    assert a_mid["rolling_avg"]==pytest.approx(20.0)
+    assert b_mid["rolling_avg"]==pytest.approx(200.0)
+
+def test_rolling_av_unsorted_input():
+    ts=pd.DataFrame([
+        {"region": "A", "year": 2013, "prevalence_pct": 30.0, "measure": "obesity"},
+        {"region": "A", "year": 2011, "prevalence_pct": 10.0, "measure": "obesity"},
+        {"region": "A", "year": 2012, "prevalence_pct": 20.0, "measure": "obesity"}
+    ])
+
+    result=compute_rolling_avg(ts,window=3)
+
+    mid=result[result["year"]==2012].iloc[0]
+
+    assert mid["rolling_avg"]==pytest.approx(20.0)
 # ---------------------------------------------------------------------------
 # pivot_regional_trends
 # ---------------------------------------------------------------------------
