@@ -12,7 +12,7 @@ from pathlib import Path
 
 from regional_analysis.example_region_run import run
 
-REGIONS = ["West", "Midwest", "Northeast", "Southwest", "SouthEast"]
+REGIONS = ["West", "Midwest", "Northeast", "Southwest", "Southeast"]
 MEASURES = ["obesity", "coverage", "smoking"]
 
 COMBINED = Path("data/processed/brfss_combined_2011_2023.csv")
