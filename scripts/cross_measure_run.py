@@ -16,8 +16,6 @@ Outputs (tables — written locally, do NOT commit):
 Outputs (figures — written locally, do NOT commit):
     outputs/figures/{region}_cross_measure_trends.png
     outputs/figures/{region}_cross_measure_correlations.png
-
-Author: Aryan Thodupunuri
 """
 
 import argparse

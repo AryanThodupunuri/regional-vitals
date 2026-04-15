@@ -26,134 +26,87 @@ This writes CSV tables to `outputs/tables/` and PNG figures to `outputs/figures/
 Instead of static notebooks, we built a CLI-based explorer that generates interactive Plotly charts (HTML files you can open in a browser: hover, zoom, filter, etc.). You can also get static PNGs if you prefer. It lets you drill down by region, measure, or specific states.
 
 To generate all the interactive charts:
-```bash
-# Interactive mode (walks you through selection prompts):
-python -m scripts.explore
+ 
+# RegionalVitals — quick snapshot
 
-# Or specify directly:
-python -m scripts.explore --region West --measure obesity
-python -m scripts.explore --region Southeast --all-measures
-python -m scripts.explore --all-regions --measure smoking
-```
-Charts go to `outputs/explore/`. Open any `.html` file in a browser.
+For Dr. Brown (short, top-level — what I want you to look at first):
 
-### 3. Trend Analysis Functions (`src/trend_analysis.py`)
-All the trend computation logic lives here — linear slopes, rolling averages, regional convergence metrics, and pre-vs-post COVID comparisons. Every other script builds on top of these functions.
+- Cross-measure comparison: `src/cross_measure.py` + runner `scripts/cross_measure_run.py` — compares obesity vs coverage vs smoking within a region, reports correlations and ranked changes, and produces CSV + PNG summaries (written locally to `outputs/`).
+- Interactive explorer (no notebooks): `python -m scripts.explore` generates interactive Plotly HTML charts in `outputs/explore/` so you can quickly filter by region, measure, and state.
+- Core trend logic: `src/trend_analysis.py` — linear slopes, rolling averages, convergence metrics, and the COVID-period comparison.
+- Tests: `pytest tests/ -v` — covers cross-measure and trend utilities; I ran the test suite and it passes.
 
-### 4. Region & State Mapping (`src/region_mapping.py`)
-Defines the five regions (Northeast, Southeast, Midwest, Southwest, West) and maps every state to its region. This is what everything else references.
-
-### 5. State Rankings (`src/state_rankings.py`)
-Ranks states by largest increase or decrease in a given measure over the full time range. Runner: `python -m scripts.state_rankings_run`.
-
-### 6. Tests (`tests/`)
-59 unit tests covering cross-measure functions, trend analysis, prevalence computation, and import smoke tests. Run with `pytest tests/ -v`.
+If you open just two things, look at:
+1. `outputs/explore/<region>_cross_measure.html` (or `outputs/explore/all_regions_<measure>.html`) — interactive charts for quick inspection.
+2. `src/cross_measure.py` + `scripts/cross_measure_run.py` — concise code that produced the CSV/PNG summaries.
 
 ---
 
-## How We Got the Data
+What I changed (brief):
+- Replaced notebook-centered exploration with a CLI Plotly explorer (HTML output) to keep the repo clean and reproducible.
+- Added a tested cross-measure module and runner so the assignment is repeatable.
+- Tidied project structure and README so the main files are obvious.
 
-All of our data comes from the **CDC Behavioral Risk Factor Surveillance System (BRFSS) Prevalence & Trends** dataset. Here's exactly how we pulled it:
+---
 
-1. The CDC publishes BRFSS data on their open data portal at [data.cdc.gov](https://data.cdc.gov). The specific dataset is **"Behavioral Risk Factor Surveillance System (BRFSS) Prevalence Data (2011 to present)"** — Socrata resource ID `dttw-5yxu`.
+Exactly how I pulled the data (detailed, reproducible):
 
-2. We wrote a Python script (`src/download_data.py`) that hits the CDC's Socrata API endpoint at `https://data.cdc.gov/resource/dttw-5yxu.json`. It pages through the API in chunks of 5,000 rows at a time.
+1. Source: CDC BRFSS Prevalence & Trends on data.cdc.gov (Socrata resource `dttw-5yxu`).
+2. Script: `src/download_data.py` queries the Socrata endpoint `https://data.cdc.gov/resource/dttw-5yxu.json` using HTTP GET. The script pages results using `?$limit=5000&$offset=<n>` until no rows remain.
+3. Filtering: for each measure I request only the overall prevalence rows (no demographic breakdowns) by matching the `topic` and `question` fields in the Socrata rows. This keeps rows where the location is a U.S. state (we drop national/territory rows).
+4. Cleaning: the script normalizes column names and types, keeps `year, state, locationdesc, measure, value, ci_lower, ci_upper, sample_size`, and writes one CSV per measure to `data/processed/`.
+5. Combining: we combine the three measure CSVs into `data/processed/brfss_combined_2011_2023.csv`, which is the single source-of-truth used by the scripts.
 
-3. For each of our three measures, we filter the API query by the BRFSS topic and question:
-   - **Obesity**: Topic = "Overweight and Obesity (BMI)", question contains "obese"
-   - **Coverage**: Topic = "Health Care Access/Coverage", question contains "health care coverage"
-   - **Smoking**: Topic = "Tobacco Use", question contains "current smoker"
+To re-download everything:
 
-4. We only keep the "Overall" breakout (no demographic sub-groups), and we drop territory/national rows — so the final data is 50 states + DC, years 2011–2023.
-
-5. The raw API response gets cleaned and standardized into our project schema: `year, state, locationdesc, measure, value, ci_lower, ci_upper, sample_size`. Each measure gets saved as its own CSV in `data/processed/`, and then we combine them into one file (`brfss_combined_2011_2023.csv`) that every script reads from.
-
-To re-download from scratch:
 ```bash
 python -m src.download_data --all --overwrite
 ```
 
 ---
 
-## Where Everything Lives
+Where to find the important files
 
 ```
 RegionalVitals/
-├── src/                            # All reusable functions (the actual package)
-│   ├── cross_measure.py            #   Cross-measure comparison (obesity vs coverage vs smoking)
-│   ├── trend_analysis.py           #   Trend slopes, rolling avg, convergence, COVID comparison
-│   ├── compute_prevalence.py       #   Weighted state-level prevalence calculation
-│   ├── region_mapping.py           #   5-region definitions + state-to-region lookup
-│   ├── state_rankings.py           #   State change rankings
-│   ├── coverage_heatmap.py         #   Region heatmap generation
-│   ├── download_data.py            #   CDC Socrata API data downloader
-│   ├── preprocessing.py            #   CSV combining helpers
-│   └── utils.py                    #   safe_read_csv, safe_write_csv
-│
-├── scripts/                        # CLI runners — these call src/ functions and write outputs
-│   ├── cross_measure_run.py        #   Run cross-measure analysis for any/all regions
-│   ├── explore.py                  #   Interactive data explorer (Plotly HTML or Matplotlib PNG)
-│   ├── example_region_run.py       #   Single region + measure → tables + figures
-│   ├── example_all_regions_run.py  #   All-region convergence & COVID comparison
-│   ├── state_rankings_run.py       #   State ranking charts
-│   ├── run_all.py                  #   Batch driver (every region × every measure)
-│   └── midwest_coverage.py         #   Midwest-specific coverage script
-│
-├── tests/                          # 59 unit tests
-│   ├── test_cross_measure.py       #   31 tests for cross-measure functions
-│   ├── test_trend_analysis.py      #   Trend analysis tests
-│   ├── test_coverage_heatmap.py
-│   ├── test_compute_prevalence/
-│   └── test_smoke.py               #   Import smoke tests
-│
-├── data/processed/                 # Combined BRFSS CSV (input data)
-├── docs/                           # Extra documentation
-├── outputs/                        # Generated tables/figures (local only, gitignored)
-├── requirements.txt
-├── CONTRIBUTING.md
-└── .gitignore
+├── src/
+│   ├── cross_measure.py
+│   ├── trend_analysis.py
+│   ├── compute_prevalence.py
+│   └── download_data.py
+├── scripts/
+│   ├── cross_measure_run.py
+│   └── explore.py
+├── outputs/
+│   ├── explore/    # interactive HTML charts
+│   └── tables/      # CSV summaries (local only)
+├── tests/
+└── data/processed/
 ```
-
-**Note:** Generated outputs (CSVs, PNGs, HTMLs) are written to `outputs/` locally but are **not committed** to the repo. Just run the scripts to reproduce anything.
 
 ---
 
-## Setup & Running
+How to run (short)
 
 ```bash
-# 1. Clone and set up
-git clone <repo-url> && cd RegionalVitals
-python -m venv .venv && source .venv/bin/activate
+# setup
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 
-# 2. Run a single region + measure
+# single region + measure
 python -m scripts.example_region_run --region West --measure obesity
 
-# 3. Run cross-measure comparison for all regions
+# cross-measure (all regions)
 python -m scripts.cross_measure_run --all-regions
 
-# 4. Generate interactive explorer charts
-python -m scripts.explore --all-regions --measure obesity
-python -m scripts.explore --region Midwest --all-measures
+# interactive explorer
+python -m scripts.explore
 
-# 5. Run all-region convergence & COVID comparison
-python -m scripts.example_all_regions_run --all
-
-# 6. State rankings
-python -m scripts.state_rankings_run
-
-# 7. Run everything at once
-python -m scripts.run_all
-```
-
-## Running Tests
-
-```bash
+# tests
 pytest tests/ -v
 ```
 
-## Limitations
+---
 
-- This is descriptive analysis only — we're not making any causal claims.
-- BRFSS methodology has changed over the years, so comparisons across the full time range should be interpreted carefully.
-- Some state-year estimates have small sample sizes and may not be super reliable.
+If you'd like I can push this README and the other small changes to a new branch and share the link here.
