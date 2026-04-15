@@ -1,10 +1,27 @@
+"""coverage_heatmap.py
+
+Generate annotated heatmaps of healthcare coverage prevalence by state and year
+for a given region.
+"""
+
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 
+
 def generate_region_heatmap(df, region_name, output_path, color_map="viridis"):
-    """
-    Creates a high-contrast heatmap for any region's healthcare data.
+    """Create and save a heatmap of prevalence by state × year for one region.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Must contain columns ``state``, ``year``, and ``prevalence_pct``.
+    region_name : str
+        Label used in the chart title (e.g. "Northeast").
+    output_path : str or Path
+        File path for the saved PNG.
+    color_map : str
+        Matplotlib / seaborn colormap name.
     """
     if df.empty:
         print(f"Skipping {region_name}: No data found.")

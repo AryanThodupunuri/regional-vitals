@@ -18,6 +18,8 @@ import shutil
 import sys
 import pandas as pd
 
+from src.region_mapping import filter_states_only
+
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PROCESSED = ROOT / "data" / "processed"
 
@@ -75,6 +77,14 @@ def combine_processed(outpath: Path = DATA_PROCESSED / "brfss_combined_2011_2023
         dfs.append(df[expected_cols])
 
     combined = pd.concat(dfs, ignore_index=True)
+
+    # Drop territory / non-state rows (GU, PR, VI, AS, MP, etc.)
+    before = len(combined)
+    combined = filter_states_only(combined, state_col="state")
+    dropped = before - len(combined)
+    if dropped:
+        print(f"Dropped {dropped} territory/non-state rows")
+
     if outpath.exists() and not overwrite:
         print(f"Combined file {outpath} already exists. Use --overwrite to replace.")
         return

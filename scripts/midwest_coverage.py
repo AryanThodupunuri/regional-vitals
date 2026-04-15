@@ -20,43 +20,49 @@ sys.path.append(str(project_root))
 from src.utils import safe_read_csv, safe_write_csv
 from src.compute_prevalence import compute_state_prevalence
 
-# loading data
-data_path = project_root / 'data' / 'processed' / 'brfss_coverage_2011_2023.csv'
-df = safe_read_csv(data_path)
 
-# midwest states
-midwest_states = REGIONS["Midwest"]
-midwest_df = df[df['state'].isin(midwest_states)]
+def main():
+    """Run the Midwest coverage analysis and write output CSVs."""
+    # loading data
+    data_path = project_root / 'data' / 'processed' / 'brfss_coverage_2011_2023.csv'
+    df = safe_read_csv(data_path)
 
-# prevalence stats
-midwest_results = compute_state_prevalence(midwest_df)
+    # midwest states
+    midwest_states = REGIONS["Midwest"]
+    midwest_df = df[df['state'].isin(midwest_states)]
 
-# placing in outputs folder
-output_path = project_root / 'outputs' / 'midwest_coverage_trends.csv'
-safe_write_csv(midwest_results, output_path)
+    # prevalence stats
+    midwest_results = compute_state_prevalence(midwest_df)
 
-# sort to ensure years are in order
-summary_midwest_df = midwest_results.sort_values(['state', 'year'])
+    # placing in outputs folder
+    output_path = project_root / 'outputs' / 'midwest_coverage_trends.csv'
+    safe_write_csv(midwest_results, output_path)
 
-# total change per state (2023 minus 2011)
-trends = []
+    # sort to ensure years are in order
+    summary_midwest_df = midwest_results.sort_values(['state', 'year'])
 
-for state in REGIONS["Midwest"]:
-    midwest_state_data = summary_midwest_df[summary_midwest_df['state'] == state]
-    
-    if not midwest_state_data.empty:
-        start_val = midwest_state_data[midwest_state_data['year'] == 2011]['prevalence_pct'].values[0]
-        end_val = midwest_state_data[midwest_state_data['year'] == 2023]['prevalence_pct'].values[0]
-        
-        growth = end_val - start_val
-        trends.append({'state': state, 'total_increase': round(growth, 2)})
+    # total change per state (2023 minus 2011)
+    trends = []
 
-# making dataframe
-midwest_growth_summary = pd.DataFrame(trends).sort_values('total_increase', ascending=False)
+    for state in REGIONS["Midwest"]:
+        midwest_state_data = summary_midwest_df[summary_midwest_df['state'] == state]
 
-# saving to outputs
-from src.utils import safe_write_csv
-output_path = project_root / 'outputs' / 'midwest_growth_summary.csv'
-safe_write_csv(midwest_growth_summary, output_path)
+        if not midwest_state_data.empty:
+            start_val = midwest_state_data[midwest_state_data['year'] == 2011]['prevalence_pct'].values[0]
+            end_val = midwest_state_data[midwest_state_data['year'] == 2023]['prevalence_pct'].values[0]
 
-print(midwest_growth_summary)
+            growth = end_val - start_val
+            trends.append({'state': state, 'total_increase': round(growth, 2)})
+
+    # making dataframe
+    midwest_growth_summary = pd.DataFrame(trends).sort_values('total_increase', ascending=False)
+
+    # saving to outputs
+    output_path = project_root / 'outputs' / 'midwest_growth_summary.csv'
+    safe_write_csv(midwest_growth_summary, output_path)
+
+    print(midwest_growth_summary)
+
+
+if __name__ == "__main__":
+    main()
