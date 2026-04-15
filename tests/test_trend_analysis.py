@@ -181,11 +181,11 @@ def test_rolling_avg_window_larger_than_group():
     assert result["rolling_avg"].isna().all()
 
 def test_rolling_avg_window_one():
-    ts = pd.DataFrame(
+    ts = pd.DataFrame([
         {"region": "A", "year": 2011, "prevalence_pct": 5.0, "measure": "obesity"},
         {"region": "A", "year": 2012, "prevalence_pct": 10.0, "measure": "obesity"},
         {"region": "A", "year": 2013, "prevalence_pct": 15.0, "measure": "obesity"}
-    )
+    ])
     result=compute_rolling_avg(ts,window=1)
 
     # since the window is one, rolling average is identical to raw data point
