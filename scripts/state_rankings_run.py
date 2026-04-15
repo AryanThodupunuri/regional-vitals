@@ -4,7 +4,7 @@ Generates tables and figures ranking states by largest increase/decrease
 in prevalence for each health measure (obesity, coverage, smoking).
 
 Usage (from repo root):
-    python -m regional_analysis.state_rankings_run
+    python -m scripts.state_rankings_run
 
 Outputs:
     outputs/tables/state_rankings_all_measures.csv

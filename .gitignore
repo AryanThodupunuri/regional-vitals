@@ -16,14 +16,16 @@ env/
 # Jupyter
 .ipynb_checkpoints/
 *.ipynb_checkpoints
+*.ipynb
+
+# Notebooks directory (deprecated)
+notebooks/
 
 # Data — raw files are large/sensitive; processed CSV is committed for reproducibility
 data/raw/
 
 # Generated outputs (reproducible from pipeline)
-outputs/tables/*.csv
-outputs/figures/*.png
-outputs/*.csv
+outputs/
 
 # macOS
 .DS_Store

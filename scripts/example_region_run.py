@@ -1,7 +1,7 @@
 """Example runner for a single region + measure.
 
 Usage (from repo root):
-    python -m regional_analysis.example_region_run --region West --measure obesity
+    python -m scripts.example_region_run --region West --measure obesity
 
 Outputs (tables):
     outputs/tables/{region_lower}_{measure_lower}_state_prevalence.csv
@@ -127,7 +127,7 @@ def run(region: str, measure: str, combined_path: Path, tables_dir: Path, figure
         print(f"Wrote {cross_out}")
 
     # NOTE: convergence and COVID-period comparison need ALL regions at once,
-    # so they live in regional_analysis/example_all_regions_run.py instead of
+    # so they live in scripts/example_all_regions_run.py instead of
     # being recomputed on every single-region run.
 
     # Figures

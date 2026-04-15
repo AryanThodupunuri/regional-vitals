@@ -3,10 +3,8 @@ pytest
 numpy
 matplotlib
 seaborn
-jupyterlab
 pyyaml
-# For mapping/geo visualizations
 geopandas
 plotly
 statsmodels
-ipywidgets
+scipy
