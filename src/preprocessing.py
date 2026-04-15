@@ -74,7 +74,11 @@ def combine_processed(outpath: Path = DATA_PROCESSED / "brfss_combined_2011_2023
         missing = [c for c in expected_cols if c not in df.columns]
         if missing:
             raise ValueError(f"File {f} is missing columns: {missing}")
-        dfs.append(df[expected_cols])
+
+        # Handle missing data
+        df = df.dropna(subset=["year", "state", "measure", "value"])
+        df["value"] = df["value"].fillna(0)  # Example: Fill missing values with 0
+        dfs.append(df)
 
     combined = pd.concat(dfs, ignore_index=True)
 
