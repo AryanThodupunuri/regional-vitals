@@ -1,13 +1,33 @@
-Contributing guidelines — RegionalVitals
+# Contributing — RegionalVitals
 
-Please follow these lightweight rules when contributing data or code:
+## General Rules
 
-- Do not upload new raw CSV files to the repository without prior discussion with the team.
-- Use processed data in `data/processed/` for analyses. If you need a raw file stored, place it in `data/raw/` and open an issue to request its addition.
-- Place regional scripts inside your region’s folder under `regional_analysis/<region>/`.
-- Do not modify `src/preprocessing.py` or core pipeline code unless the team agrees. Propose changes via a pull request and include tests.
-- Keep notebooks under `notebooks/` and avoid committing large output images; instead commit figures to `outputs/figures/`.
-- Add short descriptive commit messages and make small, focused PRs.
-- Run tests (if any) and linting locally before creating a PR.
+1. **Do not commit generated outputs.** CSV tables, PNG/HTML charts, and other artifacts belong in `outputs/` (gitignored). Run a script locally to reproduce them.
+2. **Add reusable logic to `src/`.** If your analysis involves a new computation, write a function in the appropriate module and add tests.
+3. **Add runner scripts to `scripts/`.** CLI entry-points that orchestrate `src/` functions go here.
+4. **Write tests.** Add or update tests under `tests/` for any new or changed behavior. Run `pytest tests/ -v` before opening a PR.
+5. **Do not modify core modules** (`src/preprocessing.py`, `src/region_mapping.py`) without team agreement. Open a PR and tag relevant reviewers.
+6. **Keep commits small and focused.** Use descriptive commit messages.
+7. **Do not upload raw CSV files** without prior discussion. Use processed data in `data/processed/` for analyses.
 
-If unsure, open an issue and tag the team members responsible for data management.
+## Workflow
+
+```
+1. Create a feature branch from main.
+2. Write code in src/ and/or scripts/.
+3. Add tests in tests/.
+4. Run pytest locally — all tests must pass.
+5. Open a pull request with a short description of the change.
+```
+
+## What Goes Where?
+
+| Type of work | Location |
+|---|---|
+| Reusable functions (prevalence, trends, …) | `src/` |
+| CLI runners / analysis scripts | `scripts/` |
+| Tests | `tests/` |
+| Documentation | `docs/` or `README.md` |
+| Generated tables / figures | `outputs/` (local, **not committed**) |
+
+If you're unsure whether a file should be committed, ask in the issue or PR.
