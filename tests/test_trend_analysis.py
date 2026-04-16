@@ -234,7 +234,16 @@ def test_pivot_regional_trends_shape(simple_ts):
     assert set(result.index) == {"A", "B"}
     assert set(result.columns) == {2011, 2012, 2013}
 
-
+def test_pivot_regional_trends_values(simple_ts):
+    result = pivot_regional_trends(simple_ts)
+    # Region A: 10, 12, 14 (slope +2 from 2011)
+    assert result.loc["A", 2011] == pytest.approx(10.0)
+    assert result.loc["A", 2012] == pytest.approx(12.0)
+    assert result.loc["A", 2013] == pytest.approx(14.0)
+    # Region B: 30, 29, 28 (slope -1 from 2011)
+    assert result.loc["B", 2011] == pytest.approx(30.0)
+    assert result.loc["B", 2012] == pytest.approx(29.0)
+    assert result.loc["B", 2013] == pytest.approx(28.0)
 # ---------------------------------------------------------------------------
 # pivot_measures_by_region
 # ---------------------------------------------------------------------------
