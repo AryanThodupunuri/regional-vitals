@@ -75,6 +75,16 @@ def combine_processed(outpath: Path = DATA_PROCESSED / "brfss_combined_2011_2023
         dfs.append(df[expected_cols])
 
     combined = pd.concat(dfs, ignore_index=True)
+
+    # Filter out US territories and national aggregates (GU, PR, VI, US, UW)
+    # so that only the 50 states + DC remain.  See GitHub issue #20.
+    from src.region_mapping import STATE_TO_REGION
+    before = len(combined)
+    combined = combined[combined["state"].isin(STATE_TO_REGION)].reset_index(drop=True)
+    dropped = before - len(combined)
+    if dropped:
+        print(f"Dropped {dropped} territory/aggregate rows (kept 50 states + DC)")
+
     if outpath.exists() and not overwrite:
         print(f"Combined file {outpath} already exists. Use --overwrite to replace.")
         return
