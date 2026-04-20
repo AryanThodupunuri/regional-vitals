@@ -3,14 +3,14 @@
 Batch driver: generate outputs for all region × measure combinations.
 
 Usage (from repo root):
-    python -m regional_analysis.run_all
+    python -m scripts.run_all
 
 Outputs land in outputs/tables/ and outputs/figures/ (same as example_region_run.py).
 """
 
 from pathlib import Path
 
-from regional_analysis.example_region_run import run
+from scripts.example_region_run import run
 
 REGIONS = ["West", "Midwest", "Northeast", "Southwest", "Southeast"]
 MEASURES = ["obesity", "coverage", "smoking"]

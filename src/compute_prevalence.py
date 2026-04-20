@@ -34,4 +34,15 @@ def compute_state_prevalence(df: pd.DataFrame) -> pd.DataFrame:
     
 
 def load_combined(path: Path) -> pd.DataFrame:
+    """Load a combined BRFSS CSV into a DataFrame.
+
+    Parameters
+    ----------
+    path : Path
+        Path to the CSV (e.g. ``data/processed/brfss_combined_2011_2023.csv``).
+
+    Returns
+    -------
+    pd.DataFrame
+    """
     return pd.read_csv(path)

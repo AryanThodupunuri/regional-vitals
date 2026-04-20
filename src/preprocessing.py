@@ -18,6 +18,8 @@ import shutil
 import sys
 import pandas as pd
 
+from src.region_mapping import filter_states_only
+
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PROCESSED = ROOT / "data" / "processed"
 
@@ -72,15 +74,17 @@ def combine_processed(outpath: Path = DATA_PROCESSED / "brfss_combined_2011_2023
         missing = [c for c in expected_cols if c not in df.columns]
         if missing:
             raise ValueError(f"File {f} is missing columns: {missing}")
-        dfs.append(df[expected_cols])
+
+        # Handle missing data
+        df = df.dropna(subset=["year", "state", "measure", "value"])
+        df["value"] = df["value"].fillna(0)  # Example: Fill missing values with 0
+        dfs.append(df)
 
     combined = pd.concat(dfs, ignore_index=True)
 
-    # Filter out US territories and national aggregates (GU, PR, VI, US, UW)
-    # so that only the 50 states + DC remain.  See GitHub issue #20.
-    from src.region_mapping import STATE_TO_REGION
+    # Drop territory / non-state rows (GU, PR, VI, AS, MP, etc.)
     before = len(combined)
-    combined = combined[combined["state"].isin(STATE_TO_REGION)].reset_index(drop=True)
+    combined = filter_states_only(combined, state_col="state")
     dropped = before - len(combined)
     if dropped:
         print(f"Dropped {dropped} territory/aggregate rows (kept 50 states + DC)")
