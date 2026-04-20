@@ -8,12 +8,12 @@ files that didn't depend on --region at all. This script pulls them out into
 their own runner.
 
 Usage (from repo root):
-    python -m regional_analysis.example_all_regions_run --measure obesity
-    python -m regional_analysis.example_all_regions_run --measure coverage
-    python -m regional_analysis.example_all_regions_run --measure smoking
+    python -m scripts.example_all_regions_run --measure obesity
+    python -m scripts.example_all_regions_run --measure coverage
+    python -m scripts.example_all_regions_run --measure smoking
 
     # Or run all three measures in one go:
-    python -m regional_analysis.example_all_regions_run --all
+    python -m scripts.example_all_regions_run --all
 
 Outputs (tables):
     outputs/tables/{measure}_convergence.csv
