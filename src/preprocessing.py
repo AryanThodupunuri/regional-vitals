@@ -87,7 +87,7 @@ def combine_processed(outpath: Path = DATA_PROCESSED / "brfss_combined_2011_2023
     combined = filter_states_only(combined, state_col="state")
     dropped = before - len(combined)
     if dropped:
-        print(f"Dropped {dropped} territory/non-state rows")
+        print(f"Dropped {dropped} territory/aggregate rows (kept 50 states + DC)")
 
     if outpath.exists() and not overwrite:
         print(f"Combined file {outpath} already exists. Use --overwrite to replace.")
