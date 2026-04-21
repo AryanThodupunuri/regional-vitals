@@ -94,13 +94,47 @@ Charts are saved to `outputs/explore/` (38 HTML files covering every region × m
 
 ---
 
-## Key Findings
+## Setup & Usage
 
-- Regional disparities in obesity and smoking are measurable and persistent across the 13-year window.
-- Healthcare coverage improved across all regions, with some states showing 10+ percentage-point gains.
-- COVID-era disruptions are visible in the pre/post comparison, some measures show acceleration, others show stalling.
-- Convergence analysis reveals whether regions are becoming more similar or more different over time for each indicator.
-- State-level rankings highlight which states experienced the largest shifts in each measure.
+```bash
+# Clone and set up
+git clone https://github.com/AryanThodupunuri/regional-vitals.git
+cd regional-vitals
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+# or: pip install -e ".[dev]"
+
+# Download data from CDC API
+python -m src.download_data --all
+
+# Single region + measure analysis
+python -m scripts.example_region_run --region West --measure obesity
+
+# All regions for one measure (convergence, COVID comparison)
+python -m scripts.example_all_regions_run --measure smoking
+
+# Cross-measure comparison (all regions)
+python -m scripts.cross_measure_run --all-regions
+
+# Regional summary tables
+python -m scripts.regional_summary_run
+
+# State rankings
+python -m scripts.state_rankings_run
+
+# Batch run (all region × measure combos)
+python -m scripts.run_all
+
+# Interactive Plotly explorer
+python -m scripts.explore
+
+# Midwest coverage deep-dive
+python -m scripts.midwest_coverage
+
+# Run tests
+pytest tests/ -v
+```
 
 ---
 
@@ -175,45 +209,3 @@ RegionalVitals/
 ```
 
 ---
-
-## Setup & Usage
-
-```bash
-# Clone and set up
-git clone https://github.com/AryanThodupunuri/regional-vitals.git
-cd regional-vitals
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-# or: pip install -e ".[dev]"
-
-# Download data from CDC API
-python -m src.download_data --all
-
-# Single region + measure analysis
-python -m scripts.example_region_run --region West --measure obesity
-
-# All regions for one measure (convergence, COVID comparison)
-python -m scripts.example_all_regions_run --measure smoking
-
-# Cross-measure comparison (all regions)
-python -m scripts.cross_measure_run --all-regions
-
-# Regional summary tables
-python -m scripts.regional_summary_run
-
-# State rankings
-python -m scripts.state_rankings_run
-
-# Batch run (all region × measure combos)
-python -m scripts.run_all
-
-# Interactive Plotly explorer
-python -m scripts.explore
-
-# Midwest coverage deep-dive
-python -m scripts.midwest_coverage
-
-# Run tests
-pytest tests/ -v
-```
