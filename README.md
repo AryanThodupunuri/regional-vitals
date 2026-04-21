@@ -33,7 +33,7 @@ python -m src.preprocessing --combine
 | Module | What it does |
 |---|---|
 | `compute_prevalence.py` | Computes sample-size-weighted prevalence per state × year × measure |
-| `trend_analysis.py` | Linear trend slopes (`np.polyfit`), rolling averages, regional convergence/divergence, pivot tables, and pre/post-COVID comparison |
+| `trend_analysis.py` | Linear trend slopes (`scipy.stats.linregress`) with p-values and standard errors, rolling averages, regional convergence/divergence, pivot tables, and pre/post-COVID comparison |
 | `cross_measure.py` | Compares obesity vs. coverage vs. smoking within a region: correlation matrices, ranked changes, cross-region pivot tables |
 | `regional_summary.py` | Six formatted summary tables: latest-year snapshot, period change, trend slopes, regional rankings, year-by-region matrix, grand summary statistics |
 | `state_rankings.py` | Ranks states by largest increase/decrease in prevalence for each measure over a configurable time window |
@@ -83,7 +83,7 @@ Charts are saved to `outputs/explore/` (38 HTML files covering every region × m
 ## Analytical Methods
 
 - **Weighted prevalence:** Sample-size-weighted averages at both state and regional levels (`compute_prevalence.py`, `trend_analysis.py`)
-- **Linear trend fitting:** `np.polyfit` degree-1 fit with R² to estimate annual change in percentage points (`trend_analysis.py`)
+- **Linear trend fitting:** `scipy.stats.linregress` degree-1 fit with R², p-value, and standard error to estimate annual change in percentage points and assess statistical significance (`trend_analysis.py`)
 - **Rolling averages:** Configurable-window smoothing to reduce year-to-year noise (`trend_analysis.py`)
 - **Convergence / divergence:** Year-over-year standard deviation across regions to determine if regions are converging or diverging (`trend_analysis.py`)
 - **Pre/post-COVID comparison:** Compares mean prevalence in a pre-COVID window (2017–2019) vs. post-COVID window (2021–2023) per region and measure (`trend_analysis.py`)
