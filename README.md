@@ -1,5 +1,7 @@
 # RegionalVitals
 
+*Analyze CDC public health trends across U.S. regions — obesity, smoking, and healthcare coverage from 2011 to 2023.*
+
 A Python package that analyzes CDC BRFSS health data (2011–2023) across five U.S. regions (Northeast, Southeast, Midwest, Southwest, West). We examine obesity, healthcare coverage, and smoking prevalence trends at both the state and regional level.
 
 ---
@@ -34,6 +36,7 @@ python -m src.preprocessing --combine
 |---|---|
 | `compute_prevalence.py` | Computes sample-size-weighted prevalence per state × year × measure |
 | `trend_analysis.py` | Linear trend slopes (`np.polyfit`), rolling averages, regional convergence/divergence, pivot tables, and pre/post-COVID comparison |
+| `covid_analysis.py` | Dedicated COVID-era trend-shift analysis: disruption scores, slope shifts before vs after 2020, and recovery trajectory per region |
 | `cross_measure.py` | Compares obesity vs. coverage vs. smoking within a region: correlation matrices, ranked changes, cross-region pivot tables |
 | `regional_summary.py` | Six formatted summary tables: latest-year snapshot, period change, trend slopes, regional rankings, year-by-region matrix, grand summary statistics |
 | `state_rankings.py` | Ranks states by largest increase/decrease in prevalence for each measure over a configurable time window |
@@ -51,6 +54,7 @@ python -m src.preprocessing --combine
 |---|---|
 | `example_region_run.py` | Generates tables + figures for a single region × measure |
 | `example_all_regions_run.py` | Runs all five regions for a single measure (convergence, COVID comparison, etc.) |
+| `covid_analysis_run.py` | Prints full COVID trend-shift results to console and saves CSVs — disruption scores, slope shifts, and recovery trajectories for all regions and measures |
 | `run_all.py` | Batch driver: iterates every region × measure combination |
 | `cross_measure_run.py` | Cross-measure comparison for one or all regions (CSV tables + PNG figures) |
 | `regional_summary_run.py` | Generates cross-region comparison tables (snapshot, period change, slopes) |
@@ -87,6 +91,8 @@ Charts are saved to `outputs/explore/` (38 HTML files covering every region × m
 - **Rolling averages:** Configurable-window smoothing to reduce year-to-year noise (`trend_analysis.py`)
 - **Convergence / divergence:** Year-over-year standard deviation across regions to determine if regions are converging or diverging (`trend_analysis.py`)
 - **Pre/post-COVID comparison:** Compares mean prevalence in a pre-COVID window (2017–2019) vs. post-COVID window (2021–2023) per region and measure (`trend_analysis.py`)
+- **COVID disruption score:** Combines absolute delta and slope shift magnitude to quantify how much COVID altered each region's health trajectory (`covid_analysis.py`)
+- **Recovery trajectory:** Projects the pre-COVID trend line forward and measures the gap against actual post-COVID values to assess whether regions are recovering (`covid_analysis.py`)
 - **Cross-measure correlations:** Pairwise Pearson correlations between obesity, coverage, and smoking at the state level within a region (`cross_measure.py`)
 - **State rankings:** States ranked by absolute and percentage change in prevalence, with top-N increasers and decreasers (`state_rankings.py`)
 - **Pivot tables / multi-index grouping:** Region × year, region × measure, and measure × year pivot tables for cross-sectional comparison (`trend_analysis.py`, `regional_summary.py`)
@@ -98,7 +104,8 @@ Charts are saved to `outputs/explore/` (38 HTML files covering every region × m
 
 - Regional disparities in obesity and smoking are measurable and persistent across the 13-year window.
 - Healthcare coverage improved across all regions, with some states showing 10+ percentage-point gains.
-- COVID-era disruptions are visible in the pre/post comparison, some measures show acceleration, others show stalling.
+- COVID-era disruptions are visible in the pre/post comparison — obesity rates slowed or reversed post-2020, while smoking declines accelerated.
+- The Southeast was the most COVID-disrupted region across all three health measures; the Southwest saw the largest shift in healthcare coverage trajectory.
 - Convergence analysis reveals whether regions are becoming more similar or more different over time for each indicator.
 - State-level rankings highlight which states experienced the largest shifts in each measure.
 
@@ -106,10 +113,11 @@ Charts are saved to `outputs/explore/` (38 HTML files covering every region × m
 
 ## Tests
 
-We have 60 tests across five test files:
+We have 88 tests across six test files:
 
 | Test file | Covers |
 |---|---|
+| `tests/test_covid_analysis.py` | COVID disruption scores, slope shifts, recovery trajectory, empty input handling (28 tests) |
 | `tests/test_cross_measure.py` | Cross-measure comparison functions |
 | `tests/test_trend_analysis.py` | Trend slopes, rolling averages, convergence, COVID comparison |
 | `tests/test_compute_prevalence.py` | State prevalence computation |
@@ -135,6 +143,7 @@ RegionalVitals/
 ├── src/                          # Core analysis package
 │   ├── __init__.py
 │   ├── compute_prevalence.py     # Weighted prevalence calculations
+│   ├── covid_analysis.py         # COVID trend-shift and disruption analysis
 │   ├── coverage_heatmap.py       # Seaborn heatmaps
 │   ├── cross_measure.py          # Cross-measure comparisons
 │   ├── download_data.py          # CDC API data fetcher
@@ -145,6 +154,7 @@ RegionalVitals/
 │   ├── trend_analysis.py         # Slopes, rolling avg, convergence, COVID
 │   └── utils.py                  # Shared I/O helpers
 ├── scripts/                      # CLI runner scripts
+│   ├── covid_analysis_run.py     # COVID trend-shift analysis runner
 │   ├── cross_measure_run.py
 │   ├── example_all_regions_run.py
 │   ├── example_region_run.py
@@ -154,6 +164,7 @@ RegionalVitals/
 │   ├── run_all.py
 │   └── state_rankings_run.py
 ├── tests/                        # Unit tests (pytest)
+│   ├── test_covid_analysis.py
 │   ├── test_compute_prevalence.py
 │   ├── test_coverage_heatmap.py
 │   ├── test_cross_measure.py
@@ -178,12 +189,14 @@ RegionalVitals/
 
 ## Setup & Usage
 
+**Requirements:** Python **>=3.10**
+
 ```bash
 # Clone and set up
 git clone https://github.com/AryanThodupunuri/regional-vitals.git
 cd regional-vitals
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 # or: pip install -e ".[dev]"
 
@@ -195,6 +208,10 @@ python -m scripts.example_region_run --region West --measure obesity
 
 # All regions for one measure (convergence, COVID comparison)
 python -m scripts.example_all_regions_run --measure smoking
+
+# COVID trend-shift analysis (all regions and measures)
+python -m scripts.covid_analysis_run
+python -m scripts.covid_analysis_run --measure obesity
 
 # Cross-measure comparison (all regions)
 python -m scripts.cross_measure_run --all-regions
