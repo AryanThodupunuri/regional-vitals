@@ -11,8 +11,6 @@ Outputs (tables):
     outputs/tables/covid_gap_to_best_region.csv
     outputs/tables/covid_pre_post_gap_to_best.csv
     outputs/tables/covid_disparity_rankings.csv
-
-Author: Aparna Gana
 """
 
 import argparse
