@@ -1,6 +1,36 @@
 """COVID disparity analysis runner.
 
-Generate descriptive COVID-era disparity analyses for all regions and measures.
+Generate descriptive COVID-era disparity tables for all regions and all
+project measures: obesity, healthcare coverage, and smoking.
+
+This script is the command-line runner for src/covid_disparity_analysis.py.
+It reads the combined BRFSS long-format dataset, adds a region column using
+the project state-to-region mapping, runs the COVID disparity analysis
+functions, and writes the resulting CSV tables to outputs/tables/.
+
+The analyses produced by this runner focus on disparity rather than simple
+average changes. Specifically, the script generates:
+
+1. Within-region state disparity by year:
+   Measures the gap between the lowest-prevalence and highest-prevalence
+   state inside each region for each measure and year.
+
+2. Pre/post COVID disparity change:
+   Compares average within-region state gaps in the pre-COVID window
+   (default 2017-2019) versus the post-COVID window (default 2021-2023).
+
+3. Regional gap to best-performing region:
+   Calculates how far each region is from the best-performing region in
+   each year. For coverage, higher values are better; for obesity and
+   smoking, lower values are better.
+
+4. Pre/post change in gap to best:
+   Compares whether each region moved closer to or farther from the
+   best-performing region after COVID.
+
+5. Disparity rankings:
+   Ranks regions by the largest post-COVID widening in within-region
+   state disparity.
 
 Usage (from repo root):
     python -m scripts.covid_disparity_analysis_run
@@ -11,6 +41,9 @@ Outputs (tables):
     outputs/tables/covid_gap_to_best_region.csv
     outputs/tables/covid_pre_post_gap_to_best.csv
     outputs/tables/covid_disparity_rankings.csv
+
+These analyses are descriptive only and should not be interpreted as causal
+evidence of COVID-related effects.
 """
 
 import argparse
