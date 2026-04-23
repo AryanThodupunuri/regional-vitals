@@ -2,14 +2,31 @@
 
 Utilities for descriptive COVID-era disparity analysis.
 
-This module examines whether gaps between states and regions widened or
-narrowed before vs. after COVID. It complements existing trend and pre/post
-average analyses by focusing on disparity, inequality, and distance from the
-best-performing region.
+This module examines whether gaps in BRFSS prevalence estimates widened or
+narrowed before vs. after the COVID era. While other project modules focus on
+overall trends, cross-measure comparisons, or pre/post average changes, this
+module focuses specifically on disparity: differences between states within
+the same region and differences between each region and the best-performing
+region.
 
-Methods are descriptive only and do not make causal claims.
+The module supports three related questions:
 
-Author: Aparna Gana
+1. Within-region state disparity:
+   For each region, measure, and year, how large is the gap between the
+   lowest-prevalence and highest-prevalence state?
+
+2. Pre/post COVID disparity change:
+   Did the average within-region state gap widen, narrow, or remain roughly
+   unchanged after COVID?
+
+3. Regional gap to best performer:
+   For each measure and year, how far is each region from the best-performing
+   region? For coverage, higher prevalence is treated as better. For obesity
+   and smoking, lower prevalence is treated as better.
+
+The functions in this module are descriptive only. They are intended to help
+identify patterns in public health disparities, not to make causal claims
+about COVID or policy effects.
 """
 
 import numpy as np
