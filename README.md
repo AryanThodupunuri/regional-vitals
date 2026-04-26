@@ -102,7 +102,7 @@ Charts are saved to `outputs/explore/` (38 HTML files covering every region × m
 
 ## Tests
 
-We have 88 tests across six test files:
+We have 154 tests across ten test files (run `pytest tests/ --collect-only` if you need an exact count after changes):
 
 | Test file | Covers |
 |---|---|
@@ -111,7 +111,11 @@ We have 88 tests across six test files:
 | `tests/test_trend_analysis.py` | Trend slopes, rolling averages, convergence, COVID comparison |
 | `tests/test_compute_prevalence.py` | State prevalence computation |
 | `tests/test_coverage_heatmap.py` | Heatmap generation |
-| `tests/test_smoke.py` | Smoke tests for imports and basic wiring |
+| `tests/test_regional_summary.py` | Regional summary tables (snapshot, period change, slopes, rankings, matrices) |
+| `tests/test_region_mapping.py` | Region definitions and state-to-region mapping |
+| `tests/test_state_rankings.py` | State-level change rankings |
+| `tests/test_utils.py` | Shared I/O helpers |
+| `tests/test_smoke.py` | Import smoke tests for `src/` modules and basic wiring |
 
 **Coverage:** 36% overall, 92% for `src/cross_measure.py`.
 
@@ -222,12 +226,16 @@ RegionalVitals/
 │   ├── run_all.py
 │   └── state_rankings_run.py
 ├── tests/                        # Unit tests (pytest)
-│   ├── test_covid_analysis.py
 │   ├── test_compute_prevalence.py
 │   ├── test_coverage_heatmap.py
+│   ├── test_covid_analysis.py
 │   ├── test_cross_measure.py
+│   ├── test_region_mapping.py
+│   ├── test_regional_summary.py
 │   ├── test_smoke.py
-│   └── test_trend_analysis.py
+│   ├── test_state_rankings.py
+│   ├── test_trend_analysis.py
+│   └── test_utils.py
 ├── data/
 │   ├── processed/                # Cleaned CSVs (source of truth)
 │   └── README_DATA.md
