@@ -9,6 +9,12 @@ MODULES = [
     "src.compute_prevalence",
     "src.trend_analysis",
     "src.preprocessing",
+    "src.covid_analysis",
+    "src.cross_measure",
+    "src.coverage_heatmap",
+    "src.regional_summary",
+    "src.state_rankings",
+    "src.download_data",
 ]
 
 

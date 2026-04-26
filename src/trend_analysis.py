@@ -76,6 +76,8 @@ def compute_trend_slope(regional_ts: pd.DataFrame) -> pd.DataFrame:
                     "slope_pp_yr": np.nan,
                     "intercept": np.nan,
                     "r_squared": np.nan,
+                    "p_value": np.nan,
+                    "std_err": np.nan,
                     "years_n": len(years),
                 }
             )
