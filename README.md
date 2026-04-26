@@ -2,7 +2,7 @@
 
 *Analyze CDC public health trends across U.S. regions — obesity, smoking, and healthcare coverage from 2011 to 2023.*
 
-A Python package that analyzes CDC BRFSS health data (2011–2023) across five U.S. regions (Northeast, Southeast, Midwest, Southwest, West). We examine obesity, healthcare coverage, and smoking prevalence trends at both the state and regional level.
+A Python package that analyzes CDC BRFSS health data (2011–2023) across five U.S. regions (Northeast, Southeast, Midwest, Southwest, West). We examine obesity, healthcare coverage, and smoking prevalence trends at both the state and regional level. The package is equiped with various exploratory, analytical, data processing, and visual tools.
 
 ---
 
@@ -100,17 +100,6 @@ Charts are saved to `outputs/explore/` (38 HTML files covering every region × m
 
 ---
 
-## Key Findings
-
-- Regional disparities in obesity and smoking are measurable and persistent across the 13-year window.
-- Healthcare coverage improved across all regions, with some states showing 10+ percentage-point gains.
-- COVID-era disruptions are visible in the pre/post comparison — obesity rates slowed or reversed post-2020, while smoking declines accelerated.
-- The Southeast was the most COVID-disrupted region across all three health measures; the Southwest saw the largest shift in healthcare coverage trajectory.
-- Convergence analysis reveals whether regions are becoming more similar or more different over time for each indicator.
-- State-level rankings highlight which states experienced the largest shifts in each measure.
-
----
-
 ## Tests
 
 We have 88 tests across six test files:
@@ -132,6 +121,55 @@ pytest tests/ -v
 
 # Run with coverage report
 pytest --cov=src tests/
+```
+---
+
+## Setup & Usage
+
+**Requirements:** Python **>=3.10**
+
+```bash
+# Clone and set up
+git clone https://github.com/AryanThodupunuri/regional-vitals.git
+cd regional-vitals
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+# or: pip install -e ".[dev]"
+
+# Download data from CDC API
+python -m src.download_data --all
+
+# Single region + measure analysis
+python -m scripts.example_region_run --region West --measure obesity
+
+# All regions for one measure (convergence, COVID comparison)
+python -m scripts.example_all_regions_run --measure smoking
+
+# COVID trend-shift analysis (all regions and measures)
+python -m scripts.covid_analysis_run
+python -m scripts.covid_analysis_run --measure obesity
+
+# Cross-measure comparison (all regions)
+python -m scripts.cross_measure_run --all-regions
+
+# Regional summary tables
+python -m scripts.regional_summary_run
+
+# State rankings
+python -m scripts.state_rankings_run
+
+# Batch run (all region × measure combos)
+python -m scripts.run_all
+
+# Interactive Plotly explorer
+python -m scripts.explore
+
+# Midwest coverage deep-dive
+python -m scripts.midwest_coverage
+
+# Run tests
+pytest tests/ -v
 ```
 
 ---
@@ -183,54 +221,4 @@ RegionalVitals/
 ├── requirements.txt              # Pinned dependencies
 ├── CONTRIBUTING.md
 └── README.md
-```
-
----
-
-## Setup & Usage
-
-**Requirements:** Python **>=3.10**
-
-```bash
-# Clone and set up
-git clone https://github.com/AryanThodupunuri/regional-vitals.git
-cd regional-vitals
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-# or: pip install -e ".[dev]"
-
-# Download data from CDC API
-python -m src.download_data --all
-
-# Single region + measure analysis
-python -m scripts.example_region_run --region West --measure obesity
-
-# All regions for one measure (convergence, COVID comparison)
-python -m scripts.example_all_regions_run --measure smoking
-
-# COVID trend-shift analysis (all regions and measures)
-python -m scripts.covid_analysis_run
-python -m scripts.covid_analysis_run --measure obesity
-
-# Cross-measure comparison (all regions)
-python -m scripts.cross_measure_run --all-regions
-
-# Regional summary tables
-python -m scripts.regional_summary_run
-
-# State rankings
-python -m scripts.state_rankings_run
-
-# Batch run (all region × measure combos)
-python -m scripts.run_all
-
-# Interactive Plotly explorer
-python -m scripts.explore
-
-# Midwest coverage deep-dive
-python -m scripts.midwest_coverage
-
-# Run tests
-pytest tests/ -v
 ```
