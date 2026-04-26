@@ -60,7 +60,8 @@ print(disruption.sort_values("disruption_score",
 # ── 4. State rankings — top 5 obesity increasers ─────────────────────────────
 print(DIVIDER + "3. Top 5 states by obesity increase (2011–2023)\n")
 
-increasers, decreasers = rank_states(df, measure="obesity", top_n=5)
+increasers, decreasers = rank_states(
+    df, measure="obesity", top_n=5)  # returns two ranked dataframes
 print(increasers.to_string(index=False))
 
 print(DIVIDER)
