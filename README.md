@@ -173,6 +173,26 @@ pytest tests/ -v
 ```
 
 ---
+## Quick demo
+
+After installing and downloading the data, run:
+
+```bash
+python demo.py
+```
+
+This will print:
+- **Trend slopes** — obesity prevalence change (per person/year) across all five regions
+- **COVID disruption scores** — how much COVID shifted each region's health trajectory
+- **State rankings** — top 5 states by obesity increase from 2011–2023
+
+For interactive charts with hover and zoom:
+
+```bash
+python -m scripts.explore
+```
+
+---
 
 ## Repository Structure
 
