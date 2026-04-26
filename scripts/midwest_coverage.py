@@ -9,7 +9,6 @@ South Dakota (SD) had the lowest growth at 5.2%.
 import pandas as pd
 import sys
 from pathlib import Path
-from src.region_mapping import REGIONS
 
 # paths to find src
 script_dir = Path(__file__).parent
@@ -17,6 +16,7 @@ project_root = script_dir.parent
 sys.path.append(str(project_root))
 
 # team tools
+from src.region_mapping import REGIONS
 from src.utils import safe_read_csv, safe_write_csv
 from src.compute_prevalence import compute_state_prevalence
 
