@@ -37,6 +37,7 @@ python -m src.preprocessing --combine
 | `compute_prevalence.py` | Computes sample-size-weighted prevalence per state × year × measure |
 | `trend_analysis.py` | Linear trend slopes (`np.polyfit`), rolling averages, regional convergence/divergence, pivot tables, and pre/post-COVID comparison |
 | `covid_analysis.py` | Dedicated COVID-era trend-shift analysis: disruption scores, slope shifts before vs after 2020, and recovery trajectory per region |
+| `covid_disparity_analysis.py` | Analyzes COVID-era disparities: within-region state gaps, pre/post inequality changes, gap to best-performing region, and regional disparity rankings |  
 | `cross_measure.py` | Compares obesity vs. coverage vs. smoking within a region: correlation matrices, ranked changes, cross-region pivot tables |
 | `regional_summary.py` | Six formatted summary tables: latest-year snapshot, period change, trend slopes, regional rankings, year-by-region matrix, grand summary statistics |
 | `state_rankings.py` | Ranks states by largest increase/decrease in prevalence for each measure over a configurable time window |
@@ -55,6 +56,7 @@ python -m src.preprocessing --combine
 | `example_region_run.py` | Generates tables + figures for a single region × measure |
 | `example_all_regions_run.py` | Runs all five regions for a single measure (convergence, COVID comparison, etc.) |
 | `covid_analysis_run.py` | Prints full COVID trend-shift results to console and saves CSVs — disruption scores, slope shifts, and recovery trajectories for all regions and measures |
+| `covid_disparity_analysis_run.py` | Generates COVID-era disparity tables — within-region state gaps, pre/post inequality changes, gap to best-performing region, and regional disparity rankings |
 | `run_all.py` | Batch driver: iterates every region × measure combination |
 | `cross_measure_run.py` | Cross-measure comparison for one or all regions (CSV tables + PNG figures) |
 | `regional_summary_run.py` | Generates cross-region comparison tables (snapshot, period change, slopes) |
@@ -93,6 +95,7 @@ Charts are saved to `outputs/explore/` (38 HTML files covering every region × m
 - **Pre/post-COVID comparison:** Compares mean prevalence in a pre-COVID window (2017–2019) vs. post-COVID window (2021–2023) per region and measure (`trend_analysis.py`)
 - **COVID disruption score:** Combines absolute delta and slope shift magnitude to quantify how much COVID altered each region's health trajectory (`covid_analysis.py`)
 - **Recovery trajectory:** Projects the pre-COVID trend line forward and measures the gap against actual post-COVID values to assess whether regions are recovering (`covid_analysis.py`)
+- **Disparity / inequality analysis:** Measures within-region state variation and regional gaps to the best performer, and evaluates whether health disparities widened or narrowed after COVID (2017–2019 vs. 2021–2023) (`covid_disparity_analysis.py`)
 - **Cross-measure correlations:** Pairwise Pearson correlations between obesity, coverage, and smoking at the state level within a region (`cross_measure.py`)
 - **State rankings:** States ranked by absolute and percentage change in prevalence, with top-N increasers and decreasers (`state_rankings.py`)
 - **Pivot tables / multi-index grouping:** Region × year, region × measure, and measure × year pivot tables for cross-sectional comparison (`trend_analysis.py`, `regional_summary.py`)
@@ -107,6 +110,7 @@ We have 154 tests across ten test files (run `pytest tests/ --collect-only` if y
 | Test file | Covers |
 |---|---|
 | `tests/test_covid_analysis.py` | COVID disruption scores, slope shifts, recovery trajectory, empty input handling (28 tests) |
+| `tests/test_covid_disparity_analysis.py` | COVID disparity analysis: within-region state gaps, pre/post inequality changes, gap-to-best comparisons, and disparity rankings |
 | `tests/test_cross_measure.py` | Cross-measure comparison functions |
 | `tests/test_trend_analysis.py` | Trend slopes, rolling averages, convergence, COVID comparison |
 | `tests/test_compute_prevalence.py` | State prevalence computation |
@@ -206,6 +210,7 @@ RegionalVitals/
 │   ├── __init__.py
 │   ├── compute_prevalence.py     # Weighted prevalence calculations
 │   ├── covid_analysis.py         # COVID trend-shift and disruption analysis
+│   ├── covid_disparity_analysis.py # COVID-era disparity / inequality analysis (state gaps, gap-to-best, rankings)
 │   ├── coverage_heatmap.py       # Seaborn heatmaps
 │   ├── cross_measure.py          # Cross-measure comparisons
 │   ├── download_data.py          # CDC API data fetcher
@@ -217,6 +222,7 @@ RegionalVitals/
 │   └── utils.py                  # Shared I/O helpers
 ├── scripts/                      # CLI runner scripts
 │   ├── covid_analysis_run.py     # COVID trend-shift analysis runner
+│   ├── covid_disparity_analysis_run.py # COVID disparity analysis runner (generates inequality tables)
 │   ├── cross_measure_run.py
 │   ├── example_all_regions_run.py
 │   ├── example_region_run.py
@@ -229,6 +235,7 @@ RegionalVitals/
 │   ├── test_compute_prevalence.py
 │   ├── test_coverage_heatmap.py
 │   ├── test_covid_analysis.py
+│   ├── test_covid_disparity_analysis.py # Tests for disparity analysis (state gaps, pre/post changes, rankings)
 │   ├── test_cross_measure.py
 │   ├── test_region_mapping.py
 │   ├── test_regional_summary.py
