@@ -105,6 +105,7 @@ Charts are saved to `outputs/explore/` (38 HTML files covering every region × m
 
 ## Tests
 
+We have 183 tests across eleven test files (run `pytest tests/ --collect-only` if you need an exact count after changes):
 We have 154 tests across ten test files (run `pytest tests/ --collect-only` if you need an exact count after changes):
 
 | Test file | Covers |
@@ -120,8 +121,9 @@ We have 154 tests across ten test files (run `pytest tests/ --collect-only` if y
 | `tests/test_state_rankings.py` | State-level change rankings |
 | `tests/test_utils.py` | Shared I/O helpers |
 | `tests/test_smoke.py` | Import smoke tests for `src/` modules and basic wiring |
+| `tests/test_coverage_boost.py` | Targets previously uncovered computation paths in `trend_analysis.py`, `covid_analysis.py`, and `regional_summary.py` — including `compare_covid_periods_by_measure`, COVID branch edge cases (missing columns, sparse windows, all-invalid regions), and default-year auto-detection in summary tables (29 tests) |
 
-**Coverage:** 36% overall, 92% for `src/cross_measure.py`.
+**Coverage:** `trend_analysis.py` 100%, `covid_analysis.py` 100%, `regional_summary.py` 100%.
 
 ```bash
 # Run tests
@@ -242,6 +244,7 @@ RegionalVitals/
 │   ├── test_smoke.py
 │   ├── test_state_rankings.py
 │   ├── test_trend_analysis.py
+│   ├── test_coverage_boost.py    # Boosts coverage on trend_analysis, covid_analysis, regional_summary to 100%
 │   └── test_utils.py
 ├── data/
 │   ├── processed/                # Cleaned CSVs (source of truth)
@@ -256,4 +259,5 @@ RegionalVitals/
 ├── requirements.txt              # Pinned dependencies
 ├── CONTRIBUTING.md
 └── README.md
+```
 ```
