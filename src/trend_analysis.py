@@ -6,6 +6,7 @@ This module intentionally keeps methods simple and descriptive (no causal modeli
 
 import numpy as np
 import pandas as pd
+from scipy import stats
 
 
 def compute_region_year_prevalence(df: pd.DataFrame, measure: str) -> pd.DataFrame:
@@ -57,6 +58,8 @@ def compute_trend_slope(regional_ts: pd.DataFrame) -> pd.DataFrame:
         slope_pp_yr     — estimated change in prevalence (pp) per year
         intercept       — fitted value at year 0 (use for prediction only)
         r_squared       — coefficient of determination (fit quality, 0–1)
+        p_value         — p-value for the slope (is the trend significant?)
+        std_err         — standard error of the slope
         years_n         — number of data points used in the fit
     """
     records = []
@@ -73,26 +76,24 @@ def compute_trend_slope(regional_ts: pd.DataFrame) -> pd.DataFrame:
                     "slope_pp_yr": np.nan,
                     "intercept": np.nan,
                     "r_squared": np.nan,
+                    "p_value": np.nan,
+                    "std_err": np.nan,
                     "years_n": len(years),
                 }
             )
             continue
 
-        # np.polyfit returns [slope, intercept] for deg=1
-        slope, intercept = np.polyfit(years, values, deg=1)
-
-        # R² = 1 - SS_res / SS_tot
-        fitted = slope * years + intercept
-        ss_res = np.sum((values - fitted) ** 2)
-        ss_tot = np.sum((values - np.mean(values)) ** 2)
-        r_squared = 1.0 - ss_res / ss_tot if ss_tot > 0 else np.nan
+        # scipy.stats.linregress gives us everything in one call
+        result = stats.linregress(years, values)
 
         records.append(
             {
                 "region": region,
-                "slope_pp_yr": round(float(slope), 4),
-                "intercept": round(float(intercept), 4),
-                "r_squared": round(float(r_squared), 4),
+                "slope_pp_yr": round(float(result.slope), 4),
+                "intercept": round(float(result.intercept), 4),
+                "r_squared": round(float(result.rvalue ** 2), 4),
+                "p_value": round(float(result.pvalue), 4),
+                "std_err": round(float(result.stderr), 4),
                 "years_n": len(years),
             }
         )
@@ -295,7 +296,8 @@ def compare_covid_periods_by_measure(
         Columns:
         measure, region, pre_avg, post_avg, delta, pct_change
     """
-    required_regions = ["Northeast", "Southeast", "Midwest", "Southwest", "West"]
+    required_regions = ["Northeast", "Southeast",
+                        "Midwest", "Southwest", "West"]
     required_measures = ["coverage", "obesity", "smoking"]
 
     required_cols = {region_col, year_col, measure_col, value_col}
@@ -337,7 +339,8 @@ def compare_covid_periods_by_measure(
 
     if not results:
         return pd.DataFrame(
-            columns=["measure", "region", "pre_avg", "post_avg", "delta", "pct_change"]
+            columns=["measure", "region", "pre_avg",
+                     "post_avg", "delta", "pct_change"]
         )
 
     final = pd.concat(results, ignore_index=True)

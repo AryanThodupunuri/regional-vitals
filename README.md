@@ -106,6 +106,7 @@ Charts are saved to `outputs/explore/` (38 HTML files covering every region × m
 ## Tests
 
 We have 183 tests across eleven test files (run `pytest tests/ --collect-only` if you need an exact count after changes):
+We have 154 tests across ten test files (run `pytest tests/ --collect-only` if you need an exact count after changes):
 
 | Test file | Covers |
 |---|---|
@@ -258,4 +259,5 @@ RegionalVitals/
 ├── requirements.txt              # Pinned dependencies
 ├── CONTRIBUTING.md
 └── README.md
+```
 ```
