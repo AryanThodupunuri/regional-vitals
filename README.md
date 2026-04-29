@@ -2,7 +2,7 @@
 
 *Analyze CDC public health trends across U.S. regions — obesity, smoking, and healthcare coverage from 2011 to 2023.*
 
-A Python package that analyzes CDC BRFSS health data (2011–2023) across five U.S. regions (Northeast, Southeast, Midwest, Southwest, West). We examine obesity, healthcare coverage, and smoking prevalence trends at both the state and regional level.
+A Python package that analyzes CDC BRFSS health data (2011–2023) across five U.S. regions (Northeast, Southeast, Midwest, Southwest, West). We examine obesity, healthcare coverage, and smoking prevalence trends at both the state and regional level. The package is equiped with various exploratory, analytical, data processing, and visual tools.
 
 ---
 
@@ -37,6 +37,7 @@ python -m src.preprocessing --combine
 | `compute_prevalence.py` | Computes sample-size-weighted prevalence per state × year × measure |
 | `trend_analysis.py` | Linear trend slopes (`np.polyfit`), rolling averages, regional convergence/divergence, pivot tables, and pre/post-COVID comparison |
 | `covid_analysis.py` | Dedicated COVID-era trend-shift analysis: disruption scores, slope shifts before vs after 2020, and recovery trajectory per region |
+| `covid_disparity_analysis.py` | Analyzes COVID-era disparities: within-region state gaps, pre/post inequality changes, gap to best-performing region, and regional disparity rankings |  
 | `cross_measure.py` | Compares obesity vs. coverage vs. smoking within a region: correlation matrices, ranked changes, cross-region pivot tables |
 | `regional_summary.py` | Six formatted summary tables: latest-year snapshot, period change, trend slopes, regional rankings, year-by-region matrix, grand summary statistics |
 | `state_rankings.py` | Ranks states by largest increase/decrease in prevalence for each measure over a configurable time window |
@@ -55,6 +56,7 @@ python -m src.preprocessing --combine
 | `example_region_run.py` | Generates tables + figures for a single region × measure |
 | `example_all_regions_run.py` | Runs all five regions for a single measure (convergence, COVID comparison, etc.) |
 | `covid_analysis_run.py` | Prints full COVID trend-shift results to console and saves CSVs — disruption scores, slope shifts, and recovery trajectories for all regions and measures |
+| `covid_disparity_analysis_run.py` | Generates COVID-era disparity tables — within-region state gaps, pre/post inequality changes, gap to best-performing region, and regional disparity rankings |
 | `run_all.py` | Batch driver: iterates every region × measure combination |
 | `cross_measure_run.py` | Cross-measure comparison for one or all regions (CSV tables + PNG figures) |
 | `regional_summary_run.py` | Generates cross-region comparison tables (snapshot, period change, slopes) |
@@ -93,6 +95,7 @@ Charts are saved to `outputs/explore/` (38 HTML files covering every region × m
 - **Pre/post-COVID comparison:** Compares mean prevalence in a pre-COVID window (2017–2019) vs. post-COVID window (2021–2023) per region and measure (`trend_analysis.py`)
 - **COVID disruption score:** Combines absolute delta and slope shift magnitude to quantify how much COVID altered each region's health trajectory (`covid_analysis.py`)
 - **Recovery trajectory:** Projects the pre-COVID trend line forward and measures the gap against actual post-COVID values to assess whether regions are recovering (`covid_analysis.py`)
+- **Disparity / inequality analysis:** Measures within-region state variation and regional gaps to the best performer, and evaluates whether health disparities widened or narrowed after COVID (2017–2019 vs. 2021–2023) (`covid_disparity_analysis.py`)
 - **Cross-measure correlations:** Pairwise Pearson correlations between obesity, coverage, and smoking at the state level within a region (`cross_measure.py`)
 - **State rankings:** States ranked by absolute and percentage change in prevalence, with top-N increasers and decreasers (`state_rankings.py`)
 - **Pivot tables / multi-index grouping:** Region × year, region × measure, and measure × year pivot tables for cross-sectional comparison (`trend_analysis.py`, `regional_summary.py`)
@@ -100,31 +103,26 @@ Charts are saved to `outputs/explore/` (38 HTML files covering every region × m
 
 ---
 
-## Key Findings
-
-- Regional disparities in obesity and smoking are measurable and persistent across the 13-year window.
-- Healthcare coverage improved across all regions, with some states showing 10+ percentage-point gains.
-- COVID-era disruptions are visible in the pre/post comparison — obesity rates slowed or reversed post-2020, while smoking declines accelerated.
-- The Southeast was the most COVID-disrupted region across all three health measures; the Southwest saw the largest shift in healthcare coverage trajectory.
-- Convergence analysis reveals whether regions are becoming more similar or more different over time for each indicator.
-- State-level rankings highlight which states experienced the largest shifts in each measure.
-
----
-
 ## Tests
 
-We have 88 tests across six test files:
+We have 183 tests across eleven test files (run `pytest tests/ --collect-only` if you need an exact count after changes):
 
 | Test file | Covers |
 |---|---|
 | `tests/test_covid_analysis.py` | COVID disruption scores, slope shifts, recovery trajectory, empty input handling (28 tests) |
+| `tests/test_covid_disparity_analysis.py` | COVID disparity analysis: within-region state gaps, pre/post inequality changes, gap-to-best comparisons, and disparity rankings |
 | `tests/test_cross_measure.py` | Cross-measure comparison functions |
 | `tests/test_trend_analysis.py` | Trend slopes, rolling averages, convergence, COVID comparison |
 | `tests/test_compute_prevalence.py` | State prevalence computation |
 | `tests/test_coverage_heatmap.py` | Heatmap generation |
-| `tests/test_smoke.py` | Smoke tests for imports and basic wiring |
+| `tests/test_regional_summary.py` | Regional summary tables (snapshot, period change, slopes, rankings, matrices) |
+| `tests/test_region_mapping.py` | Region definitions and state-to-region mapping |
+| `tests/test_state_rankings.py` | State-level change rankings |
+| `tests/test_utils.py` | Shared I/O helpers |
+| `tests/test_smoke.py` | Import smoke tests for `src/` modules and basic wiring |
+| `tests/test_coverage_boost.py` | Targets previously uncovered computation paths in `trend_analysis.py`, `covid_analysis.py`, and `regional_summary.py` — including `compare_covid_periods_by_measure`, COVID branch edge cases (missing columns, sparse windows, all-invalid regions), and default-year auto-detection in summary tables (29 tests) |
 
-**Coverage:** 36% overall, 92% for `src/cross_measure.py`.
+**Coverage:** `trend_analysis.py` 100%, `covid_analysis.py` 100%, `regional_summary.py` 100%.
 
 ```bash
 # Run tests
@@ -133,58 +131,6 @@ pytest tests/ -v
 # Run with coverage report
 pytest --cov=src tests/
 ```
-
----
-
-## Repository Structure
-
-```
-RegionalVitals/
-├── src/                          # Core analysis package
-│   ├── __init__.py
-│   ├── compute_prevalence.py     # Weighted prevalence calculations
-│   ├── covid_analysis.py         # COVID trend-shift and disruption analysis
-│   ├── coverage_heatmap.py       # Seaborn heatmaps
-│   ├── cross_measure.py          # Cross-measure comparisons
-│   ├── download_data.py          # CDC API data fetcher
-│   ├── preprocessing.py          # CSV combining + missing data handling
-│   ├── region_mapping.py         # Region definitions + territory filtering
-│   ├── regional_summary.py       # Six summary table generators
-│   ├── state_rankings.py         # State-level change rankings
-│   ├── trend_analysis.py         # Slopes, rolling avg, convergence, COVID
-│   └── utils.py                  # Shared I/O helpers
-├── scripts/                      # CLI runner scripts
-│   ├── covid_analysis_run.py     # COVID trend-shift analysis runner
-│   ├── cross_measure_run.py
-│   ├── example_all_regions_run.py
-│   ├── example_region_run.py
-│   ├── explore.py                # Interactive Plotly explorer
-│   ├── midwest_coverage.py
-│   ├── regional_summary_run.py
-│   ├── run_all.py
-│   └── state_rankings_run.py
-├── tests/                        # Unit tests (pytest)
-│   ├── test_covid_analysis.py
-│   ├── test_compute_prevalence.py
-│   ├── test_coverage_heatmap.py
-│   ├── test_cross_measure.py
-│   ├── test_smoke.py
-│   └── test_trend_analysis.py
-├── data/
-│   ├── processed/                # Cleaned CSVs (source of truth)
-│   └── README_DATA.md
-├── outputs/                      # Generated locally (gitignored)
-│   ├── explore/                  # Interactive HTML charts
-│   ├── figures/                  # PNG figures
-│   └── tables/                   # CSV summary tables
-├── docs/
-│   └── NO_OUTPUTS.md
-├── pyproject.toml                # pip install -e ".[dev]"
-├── requirements.txt              # Pinned dependencies
-├── CONTRIBUTING.md
-└── README.md
-```
-
 ---
 
 ## Setup & Usage
@@ -233,4 +179,83 @@ python -m scripts.midwest_coverage
 
 # Run tests
 pytest tests/ -v
+```
+
+---
+## Quick demo
+
+After installing and downloading the data, run:
+
+```bash
+python demo.py
+```
+
+This will print:
+- **Trend slopes** — obesity prevalence change (per person/year) across all five regions
+- **COVID disruption scores** — how much COVID shifted each region's health trajectory
+- **State rankings** — top 5 states by obesity increase from 2011–2023
+
+For interactive charts with hover and zoom:
+
+```bash
+python -m scripts.explore
+```
+
+---
+
+## Repository Structure
+
+```
+RegionalVitals/
+├── src/                          # Core analysis package
+│   ├── __init__.py
+│   ├── compute_prevalence.py     # Weighted prevalence calculations
+│   ├── covid_analysis.py         # COVID trend-shift and disruption analysis
+│   ├── covid_disparity_analysis.py # COVID-era disparity / inequality analysis (state gaps, gap-to-best, rankings)
+│   ├── coverage_heatmap.py       # Seaborn heatmaps
+│   ├── cross_measure.py          # Cross-measure comparisons
+│   ├── download_data.py          # CDC API data fetcher
+│   ├── preprocessing.py          # CSV combining + missing data handling
+│   ├── region_mapping.py         # Region definitions + territory filtering
+│   ├── regional_summary.py       # Six summary table generators
+│   ├── state_rankings.py         # State-level change rankings
+│   ├── trend_analysis.py         # Slopes, rolling avg, convergence, COVID
+│   └── utils.py                  # Shared I/O helpers
+├── scripts/                      # CLI runner scripts
+│   ├── covid_analysis_run.py     # COVID trend-shift analysis runner
+│   ├── covid_disparity_analysis_run.py # COVID disparity analysis runner (generates inequality tables)
+│   ├── cross_measure_run.py
+│   ├── example_all_regions_run.py
+│   ├── example_region_run.py
+│   ├── explore.py                # Interactive Plotly explorer
+│   ├── midwest_coverage.py
+│   ├── regional_summary_run.py
+│   ├── run_all.py
+│   └── state_rankings_run.py
+├── tests/                        # Unit tests (pytest)
+│   ├── test_compute_prevalence.py
+│   ├── test_coverage_heatmap.py
+│   ├── test_covid_analysis.py
+│   ├── test_covid_disparity_analysis.py # Tests for disparity analysis (state gaps, pre/post changes, rankings)
+│   ├── test_cross_measure.py
+│   ├── test_region_mapping.py
+│   ├── test_regional_summary.py
+│   ├── test_smoke.py
+│   ├── test_state_rankings.py
+│   ├── test_trend_analysis.py
+│   ├── test_coverage_boost.py    # Boosts coverage on trend_analysis, covid_analysis, regional_summary to 100%
+│   └── test_utils.py
+├── data/
+│   ├── processed/                # Cleaned CSVs (source of truth)
+│   └── README_DATA.md
+├── outputs/                      # Generated locally (gitignored)
+│   ├── explore/                  # Interactive HTML charts
+│   ├── figures/                  # PNG figures
+│   └── tables/                   # CSV summary tables
+├── docs/
+│   └── NO_OUTPUTS.md
+├── pyproject.toml                # pip install -e ".[dev]"
+├── requirements.txt              # Pinned dependencies
+├── CONTRIBUTING.md
+└── README.md
 ```
