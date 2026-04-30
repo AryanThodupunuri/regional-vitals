@@ -203,7 +203,7 @@ def test_compute_regional_gap_to_best_missing_columns_raises(sample_brfss_df):
 # compare_pre_post_gap_to_best
 # ---------------------------------------------------------------------------
 
-def test_compare_pre_post_gap_to_best_farther_from_best(sample_brfss_df):
+def test_compare_pre_post_gap_to_best_closer_to_best(sample_brfss_df):
     gap_df = compute_regional_gap_to_best(sample_brfss_df, measures=["coverage"])
     result = compare_pre_post_gap_to_best(gap_df, pre=(2017, 2017), post=(2021, 2021))
 
@@ -213,9 +213,9 @@ def test_compare_pre_post_gap_to_best_farther_from_best(sample_brfss_df):
     ].iloc[0]
 
     assert row["pre_gap_to_best"] == pytest.approx(5.0)
-    assert row["post_gap_to_best"] == pytest.approx(6.0)
-    assert row["gap_change"] == pytest.approx(1.0)
-    assert row["relative_position"] == "farther from best"
+    assert row["post_gap_to_best"] == pytest.approx(1.0)
+    assert row["gap_change"] == pytest.approx(-4.0)
+    assert row["relative_position"] == "closer to best"
 
 
 def test_compare_pre_post_gap_to_best_unchanged_for_best_region(sample_brfss_df):
