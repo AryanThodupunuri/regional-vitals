@@ -30,7 +30,7 @@ import pandas as pd
 
 from src.compute_prevalence import compute_state_prevalence
 from src.cross_measure import compare_measures_over_time, compute_measure_correlations
-from src.region_mapping import REGIONS, STATE_TO_REGION
+from src.region_mapping import REGIONS, add_region_column
 from src.trend_analysis import compute_region_year_prevalence
 from src.utils import safe_read_csv
 
@@ -44,7 +44,7 @@ VALID_MEASURES = ["obesity", "coverage", "smoking"]
 def _load(path: Path) -> pd.DataFrame:
     """Load the combined BRFSS CSV and add a region column."""
     df = safe_read_csv(path)
-    df = df.assign(region=df["state"].map(STATE_TO_REGION).fillna("Other"))
+    df = add_region_column(df)
     return df
 
 

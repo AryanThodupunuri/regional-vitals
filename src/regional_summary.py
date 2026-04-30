@@ -5,10 +5,9 @@ health indicators.  Every public function returns a plain DataFrame that the
 caller can write to CSV, render in a notebook, or format further.
 """
 
-import numpy as np
 import pandas as pd
 
-from src.region_mapping import REGIONS, STATE_TO_REGION
+from src.region_mapping import add_region_column
 from src.trend_analysis import compute_region_year_prevalence, compute_trend_slope
 
 REGION_ORDER = ["Northeast", "Southeast", "Midwest", "Southwest", "West"]
@@ -17,8 +16,7 @@ MEASURE_ORDER = ["obesity", "coverage", "smoking"]
 
 def _attach_region(df: pd.DataFrame) -> pd.DataFrame:
     """Add a ``region`` column derived from the ``state`` column."""
-    out = df.copy()
-    out["region"] = out["state"].map(STATE_TO_REGION)
+    out = add_region_column(df, unmapped_label=None)
     return out[out["region"].notna()]
 
 

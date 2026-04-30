@@ -22,7 +22,7 @@ import argparse
 from pathlib import Path
 import pandas as pd
 
-from src.region_mapping import STATE_TO_REGION
+from src.region_mapping import add_region_column
 from src.utils import safe_read_csv, safe_write_csv
 from src.trend_analysis import compute_region_year_prevalence
 from src.covid_analysis import (
@@ -52,7 +52,7 @@ def run(measures: list, combined_path: Path, tables_dir: Path):
         raise FileNotFoundError(f"Combined data file missing: {combined_path}\n"
                                 "Run: python -m src.download_data --all")
     df = safe_read_csv(combined_path)
-    df = df.assign(region=df["state"].map(STATE_TO_REGION).fillna("Other"))
+    df = add_region_column(df)
 
     # Build per-measure timeseries for all regions
     ts_by_measure = {}

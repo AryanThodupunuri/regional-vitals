@@ -35,7 +35,7 @@ from src.cross_measure import (
     generate_cross_measure_summary,
     compare_all_regions_cross_measure,
 )
-from src.region_mapping import REGIONS, STATE_TO_REGION
+from src.region_mapping import REGIONS, add_region_column
 from src.utils import safe_read_csv, safe_write_csv
 
 
@@ -89,7 +89,7 @@ def run_region(region: str, combined_path: Path, tables_dir: Path, figures_dir: 
     df = safe_read_csv(combined_path)
 
     # Add region column
-    df = df.assign(region=df["state"].map(STATE_TO_REGION).fillna("Other"))
+    df = add_region_column(df)
 
     summary = generate_cross_measure_summary(df, region, year=year)
     trends = summary["trends"]

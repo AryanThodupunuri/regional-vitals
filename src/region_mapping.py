@@ -36,6 +36,37 @@ TERRITORIES = {"GU", "PR", "VI", "AS", "MP", "US"}
 VALID_STATES = set(STATE_TO_REGION.keys())
 
 
+def add_region_column(
+    df,
+    *,
+    state_col: str = "state",
+    unmapped_label: str | None = "Other",
+):
+    """Add a ``region`` column by mapping ``state_col`` via :data:`STATE_TO_REGION`.
+
+    Parameters
+    ----------
+    df
+        Input DataFrame.
+    state_col
+        Column holding two-letter state codes.
+    unmapped_label
+        If not ``None``, unmapped states are filled with this label (scripts
+        historically used ``\"Other\"``). If ``None``, unmapped rows keep
+        NaN in ``region``.
+
+    Returns
+    -------
+    DataFrame
+        Copy of *df* with ``region`` added.
+    """
+    out = df.copy()
+    out["region"] = out[state_col].map(STATE_TO_REGION)
+    if unmapped_label is not None:
+        out["region"] = out["region"].fillna(unmapped_label)
+    return out
+
+
 def filter_states_only(df, state_col="state"):
     """Remove rows whose state code is a territory or not in VALID_STATES.
 

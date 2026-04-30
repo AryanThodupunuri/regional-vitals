@@ -10,6 +10,7 @@ from src.region_mapping import (
     STATE_TO_REGION,
     TERRITORIES,
     VALID_STATES,
+    add_region_column,
     filter_states_only,
 )
 
@@ -104,3 +105,17 @@ def test_filter_custom_column_name():
     df = pd.DataFrame({"abbrev": ["NY", "PR", "CA"]})
     result = filter_states_only(df, state_col="abbrev")
     assert set(result["abbrev"].values) == {"NY", "CA"}
+
+
+def test_add_region_column_maps_and_fills_other():
+    df = pd.DataFrame({"state": ["NY", "XX"]})
+    out = add_region_column(df)
+    assert out.loc[0, "region"] == "Northeast"
+    assert out.loc[1, "region"] == "Other"
+
+
+def test_add_region_column_unmapped_stays_na_when_requested():
+    df = pd.DataFrame({"state": ["NY", "XX"]})
+    out = add_region_column(df, unmapped_label=None)
+    assert out.loc[0, "region"] == "Northeast"
+    assert pd.isna(out.loc[1, "region"])

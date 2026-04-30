@@ -28,7 +28,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-from src.region_mapping import STATE_TO_REGION
+from src.region_mapping import add_region_column
 from src.utils import safe_read_csv, safe_write_csv
 from src.trend_analysis import (
     compare_covid_periods,
@@ -67,7 +67,7 @@ def run_measure(measure: str, combined_path: Path, tables_dir: Path, figures_dir
     if missing:
         raise ValueError(f"Combined file missing columns: {missing}")
 
-    df = df.assign(region=df["state"].map(STATE_TO_REGION).fillna("Other"))
+    df = add_region_column(df)
 
     if not (df["measure"] == measure).any():
         raise ValueError(f"No rows found for measure={measure}")

@@ -1,6 +1,9 @@
 import pandas as pd
 import pytest
-from src.compute_prevalence import compute_state_prevalence
+from src.compute_prevalence import (
+    compute_state_prevalence,
+    compute_state_prevalence_change,
+)
 
 
 def test_compute_state_prevalence_uses_weighted_mean():
@@ -31,3 +34,56 @@ def test_compute_state_prevalence_uses_weighted_mean():
     assert result.loc[0, "measure"] == "obesity"
     assert result.loc[0, "sample_size"] == 400
     assert result.loc[0, "prevalence_pct"] == 25.0
+
+
+def test_compute_state_prevalence_change_fixed_window():
+    state_prev = pd.DataFrame(
+        {
+            "year": [2020, 2020, 2022, 2022],
+            "state": ["AA", "BB", "AA", "BB"],
+            "measure": ["obesity"] * 4,
+            "prevalence_pct": [10.0, 20.0, 12.0, 15.0],
+            "sample_size": [100, 100, 100, 100],
+        }
+    )
+    out = compute_state_prevalence_change(
+        state_prev, ["AA", "BB"], start_year=2020, end_year=2022
+    )
+    assert len(out) == 2
+    aa = out[out["state"] == "AA"].iloc[0]
+    assert aa["total_change"] == 2.0
+    bb = out[out["state"] == "BB"].iloc[0]
+    assert bb["total_change"] == pytest.approx(-5.0)
+
+
+def test_compute_state_prevalence_change_per_state_year_range():
+    state_prev = pd.DataFrame(
+        {
+            "year": [2019, 2021, 2020, 2022],
+            "state": ["X", "X", "Y", "Y"],
+            "prevalence_pct": [30.0, 20.0, 10.0, 11.0],
+            "sample_size": [1, 1, 1, 1],
+        }
+    )
+    out = compute_state_prevalence_change(
+        state_prev, ["X", "Y"], use_each_states_year_range=True
+    )
+    assert len(out) == 2
+    x = out[out["state"] == "X"].iloc[0]
+    assert x["start_year"] == 2019 and x["end_year"] == 2021
+    assert x["total_change"] == -10.0
+
+
+def test_compute_state_prevalence_change_skips_missing_end_year():
+    state_prev = pd.DataFrame(
+        {
+            "year": [2020, 2021],
+            "state": ["Z", "Z"],
+            "prevalence_pct": [5.0, 6.0],
+            "sample_size": [1, 1],
+        }
+    )
+    out = compute_state_prevalence_change(
+        state_prev, ["Z"], start_year=2020, end_year=2023
+    )
+    assert out.empty

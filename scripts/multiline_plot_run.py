@@ -18,7 +18,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-from src.region_mapping import STATE_TO_REGION
+from src.region_mapping import add_region_column
 from src.utils import safe_read_csv
 from src.trend_analysis import compute_region_year_prevalence
 
@@ -74,7 +74,7 @@ def run(measures: list, combined_path: Path, figures_dir: Path):
     if missing:
         raise ValueError(f"Combined file missing columns: {missing}")
 
-    df = df.assign(region=df["state"].map(STATE_TO_REGION).fillna("Other"))
+    df = add_region_column(df)
     figures_dir.mkdir(parents=True, exist_ok=True)
 
     for measure in measures:

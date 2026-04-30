@@ -23,7 +23,7 @@ import sys
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from src.region_mapping import STATE_TO_REGION
+from src.region_mapping import add_region_column
 from src.utils import safe_read_csv, safe_write_csv
 from src.compute_prevalence import compute_state_prevalence
 from src.trend_analysis import (
@@ -77,8 +77,7 @@ def run(region: str, measure: str, combined_path: Path, tables_dir: Path, figure
     if missing:
         raise ValueError(f"Combined file missing columns: {missing}")
 
-    # Add region column
-    df = df.assign(region=df["state"].map(STATE_TO_REGION).fillna("Other"))
+    df = add_region_column(df)
 
     region_filter = df["region"] == region
     measure_filter = df["measure"] == measure
