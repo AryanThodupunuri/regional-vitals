@@ -63,6 +63,8 @@ python -m src.preprocessing --combine
 | `state_rankings_run.py` | Ranks states by largest increase/decrease and produces bar charts |
 | `explore.py` | Interactive CLI-based Plotly explorer — generates HTML charts with hover/zoom/filter |
 | `midwest_coverage.py` | Focused analysis of Midwest healthcare coverage trends |
+| `multiline_plot_run.py` | Plots all five regions on one chart per measure (obesity, coverage, smoking); saves PNGs to `outputs/figures/` | 
+| `west_smoking.py` | Focused analysis of West region smoking trends (2011–2023): ranks all 11 states by total reduction and saves summary CSVs to `outputs/` | 
 
 ---
 
@@ -180,6 +182,13 @@ python -m scripts.midwest_coverage
 
 # Run tests
 pytest tests/ -v
+
+# All-regions multiline trend plots (one chart per measure)
+python -m scripts.multiline_plot_run
+python -m scripts.multiline_plot_run --measure smoking
+
+# West region smoking focused analysis
+python -m scripts.west_smoking
 ```
 
 ---
@@ -230,9 +239,11 @@ RegionalVitals/
 │   ├── example_region_run.py
 │   ├── explore.py                # Interactive Plotly explorer
 │   ├── midwest_coverage.py
+│   ├── multiline_plot_run.py
 │   ├── regional_summary_run.py
 │   ├── run_all.py
-│   └── state_rankings_run.py
+│   ├── state_rankings_run.py
+│   └── west_smoking.py
 ├── tests/                        # Unit tests (pytest)
 │   ├── test_compute_prevalence.py
 │   ├── test_coverage_heatmap.py
