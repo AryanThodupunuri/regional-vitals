@@ -1,17 +1,26 @@
 """regional_summary.py
 
 Build formatted comparison tables that span all five regions and all three
-health indicators.  Every public function returns a plain DataFrame that the
-caller can write to CSV, render in a notebook, or format further.
+health indicators.
+
+Every public function returns a plain DataFrame that the caller can write to
+CSV, render in a notebook, or format further.
 """
 
 import pandas as pd
 
 from src.region_mapping import add_region_column
 from src.trend_analysis import compute_region_year_prevalence, compute_trend_slope
+from src.utils import validate_dataframe
 
 REGION_ORDER = ["Northeast", "Southeast", "Midwest", "Southwest", "West"]
 MEASURE_ORDER = ["obesity", "coverage", "smoking"]
+
+# Columns required for any of the public summary functions to operate.
+# Every public entry point validates its input against this list so a
+# malformed/renamed CSV produces an immediate, actionable error rather
+# than a cryptic KeyError later in the pipeline.
+_REQUIRED_INPUT_COLS = ["year", "state", "measure", "value", "sample_size"]
 
 
 def _attach_region(df: pd.DataFrame) -> pd.DataFrame:
@@ -21,7 +30,7 @@ def _attach_region(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def _region_trends_all_measures(df: pd.DataFrame) -> pd.DataFrame:
-    """Weighted regional prevalence for every region × measure × year."""
+    """Weighted regional prevalence for every region x measure x year."""
     frames = []
     for measure in MEASURE_ORDER:
         ts = compute_region_year_prevalence(df, measure)
@@ -33,15 +42,16 @@ def _region_trends_all_measures(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # ------------------------------------------------------------------
-# Table 1 – Latest-year snapshot: regions × measures
+# Table 1 - Latest-year snapshot: regions x measures
 # ------------------------------------------------------------------
 
 def latest_year_snapshot(df: pd.DataFrame) -> pd.DataFrame:
-    """Pivot the most recent year of data into a regions × measures matrix.
+    """Pivot the most recent year of data into a regions x measures matrix.
 
-    Returns a DataFrame with regions as rows, measures as columns,
-    and weighted prevalence (%) as values rounded to 1 decimal place.
+    Returns a DataFrame with regions as rows, measures as columns, and
+    weighted prevalence (%) as values rounded to 1 decimal place.
     """
+    validate_dataframe(df, _REQUIRED_INPUT_COLS, name="df (latest_year_snapshot)")
     rdf = _attach_region(df)
     all_ts = _region_trends_all_measures(rdf)
     if all_ts.empty:
@@ -49,7 +59,6 @@ def latest_year_snapshot(df: pd.DataFrame) -> pd.DataFrame:
 
     latest = int(all_ts["year"].max())
     snap = all_ts[all_ts["year"] == latest].copy()
-
     pivot = snap.pivot_table(
         index="region", columns="measure", values="prevalence_pct", aggfunc="mean"
     )
@@ -57,13 +66,12 @@ def latest_year_snapshot(df: pd.DataFrame) -> pd.DataFrame:
     pivot = pivot.round(1)
     pivot.index.name = "region"
     pivot.columns.name = None
-
     pivot.attrs["title"] = f"Regional Prevalence Snapshot ({latest})"
     return pivot
 
 
 # ------------------------------------------------------------------
-# Table 2 – Period change: start-year vs end-year per region/measure
+# Table 2 - Period change: start-year vs end-year per region/measure
 # ------------------------------------------------------------------
 
 def period_change_table(
@@ -73,9 +81,10 @@ def period_change_table(
 ) -> pd.DataFrame:
     """Change in weighted prevalence from *start_year* to *end_year*.
 
-    Returns one row per region × measure with columns:
+    Returns one row per region x measure with columns:
         region, measure, start_prev, end_prev, change_pp, pct_change
     """
+    validate_dataframe(df, _REQUIRED_INPUT_COLS, name="df (period_change_table)")
     rdf = _attach_region(df)
     all_ts = _region_trends_all_measures(rdf)
     if all_ts.empty:
@@ -96,7 +105,6 @@ def period_change_table(
         .rename(columns={"prevalence_pct": "end_prev"})
         [["region", "measure", "end_prev"]]
     )
-
     merged = pd.merge(start, end, on=["region", "measure"], how="inner")
     merged["change_pp"] = (merged["end_prev"] - merged["start_prev"]).round(2)
     merged["pct_change"] = (
@@ -117,15 +125,16 @@ def period_change_table(
 
 
 # ------------------------------------------------------------------
-# Table 3 – Trend slopes across all regions × measures
+# Table 3 - Trend slopes across all regions x measures
 # ------------------------------------------------------------------
 
 def trend_slopes_summary(df: pd.DataFrame) -> pd.DataFrame:
-    """Linear-trend slope (pp / year) and R² for every region × measure.
+    """Linear-trend slope (pp / year) and R-squared for every region x measure.
 
     Returns a wide-format table:
         region | obesity_slope | obesity_r2 | coverage_slope | ...
     """
+    validate_dataframe(df, _REQUIRED_INPUT_COLS, name="df (trend_slopes_summary)")
     rdf = _attach_region(df)
     all_ts = _region_trends_all_measures(rdf)
     if all_ts.empty:
@@ -144,14 +153,13 @@ def trend_slopes_summary(df: pd.DataFrame) -> pd.DataFrame:
     result = pieces[0]
     for p in pieces[1:]:
         result = pd.merge(result, p, on="region", how="outer")
-
     result["region"] = pd.Categorical(result["region"], REGION_ORDER, ordered=True)
     result = result.sort_values("region").reset_index(drop=True)
     return result
 
 
 # ------------------------------------------------------------------
-# Table 4 – Regional rankings for a single year
+# Table 4 - Regional rankings for a single year
 # ------------------------------------------------------------------
 
 def rank_regions_by_year(
@@ -164,6 +172,7 @@ def rank_regions_by_year(
 
     Returns columns: region, measure, prevalence_pct, rank.
     """
+    validate_dataframe(df, _REQUIRED_INPUT_COLS, name="df (rank_regions_by_year)")
     rdf = _attach_region(df)
     all_ts = _region_trends_all_measures(rdf)
     if all_ts.empty:
@@ -171,8 +180,8 @@ def rank_regions_by_year(
 
     if year is None:
         year = int(all_ts["year"].max())
-
     snap = all_ts[all_ts["year"] == year].copy()
+
     rows = []
     for measure in MEASURE_ORDER:
         msub = snap[snap["measure"] == measure].copy()
@@ -187,7 +196,7 @@ def rank_regions_by_year(
 
 
 # ------------------------------------------------------------------
-# Table 5 – Year-over-year wide matrix per measure
+# Table 5 - Year-over-year wide matrix per measure
 # ------------------------------------------------------------------
 
 def year_by_region_matrix(df: pd.DataFrame, measure: str) -> pd.DataFrame:
@@ -195,11 +204,11 @@ def year_by_region_matrix(df: pd.DataFrame, measure: str) -> pd.DataFrame:
 
     Useful for quick visual scanning of a single indicator across time.
     """
+    validate_dataframe(df, _REQUIRED_INPUT_COLS, name="df (year_by_region_matrix)")
     rdf = _attach_region(df)
     ts = compute_region_year_prevalence(rdf, measure)
     if ts.empty:
         return pd.DataFrame()
-
     pivot = ts.pivot_table(
         index="region", columns="year", values="prevalence_pct", aggfunc="mean"
     ).round(1)
@@ -210,15 +219,16 @@ def year_by_region_matrix(df: pd.DataFrame, measure: str) -> pd.DataFrame:
 
 
 # ------------------------------------------------------------------
-# Table 6 – Grand summary statistics
+# Table 6 - Grand summary statistics
 # ------------------------------------------------------------------
 
 def grand_summary(df: pd.DataFrame) -> pd.DataFrame:
     """High-level summary per region: mean, min, max prevalence and sample size
     across the full study period, broken out by measure.
 
-    Returns one row per region × measure.
+    Returns one row per region x measure.
     """
+    validate_dataframe(df, _REQUIRED_INPUT_COLS, name="df (grand_summary)")
     rdf = _attach_region(df)
     all_ts = _region_trends_all_measures(rdf)
     if all_ts.empty:
@@ -235,10 +245,8 @@ def grand_summary(df: pd.DataFrame) -> pd.DataFrame:
         )
         .reset_index()
     )
-
     for col in ["mean_prev", "min_prev", "max_prev"]:
         stats[col] = stats[col].round(2)
-
     stats["region"] = pd.Categorical(stats["region"], REGION_ORDER, ordered=True)
     stats["measure"] = pd.Categorical(stats["measure"], MEASURE_ORDER, ordered=True)
     return stats.sort_values(["measure", "region"]).reset_index(drop=True)

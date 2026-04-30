@@ -8,6 +8,8 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
+from src.utils import validate_dataframe
+
 
 def compute_region_year_prevalence(df: pd.DataFrame, measure: str) -> pd.DataFrame:
     """Compute weighted-average prevalence per region per year for a given measure.
@@ -23,12 +25,15 @@ def compute_region_year_prevalence(df: pd.DataFrame, measure: str) -> pd.DataFra
     -------
     DataFrame with columns: region, year, measure, prevalence_pct, sample_size_total.
     """
+    validate_dataframe(
+        df,
+        ["year", "region", "measure", "value", "sample_size"],
+        name="df (compute_region_year_prevalence)",
+    )
     sub = df[df["measure"] == measure].copy()
     if sub.empty:
         return pd.DataFrame(columns=["region", "year", "measure", "prevalence_pct", "sample_size_total"])
-
     sub["weighted"] = sub["value"] * sub["sample_size"]
-
     agg = sub.groupby(["region", "year"], as_index=False).agg(
         weighted_sum=("weighted", "sum"),
         sample_size_total=("sample_size", "sum"),
@@ -41,8 +46,8 @@ def compute_region_year_prevalence(df: pd.DataFrame, measure: str) -> pd.DataFra
 def compute_trend_slope(regional_ts: pd.DataFrame) -> pd.DataFrame:
     """Fit a linear trend to each region's prevalence time series.
 
-    Uses ``np.polyfit(years, values, deg=1)`` — ordinary least-squares
-    polynomial fit of degree 1 — to estimate the average annual change
+    Uses ``np.polyfit(years, values, deg=1)`` -- ordinary least-squares
+    polynomial fit of degree 1 -- to estimate the average annual change
     (percentage points per year) for each region.
 
     Parameters
@@ -54,14 +59,19 @@ def compute_trend_slope(regional_ts: pd.DataFrame) -> pd.DataFrame:
     Returns
     -------
     DataFrame with columns:
-        region          — region name
-        slope_pp_yr     — estimated change in prevalence (pp) per year
-        intercept       — fitted value at year 0 (use for prediction only)
-        r_squared       — coefficient of determination (fit quality, 0–1)
-        p_value         — p-value for the slope (is the trend significant?)
-        std_err         — standard error of the slope
-        years_n         — number of data points used in the fit
+        region        -- region name
+        slope_pp_yr   -- estimated change in prevalence (pp) per year
+        intercept     -- fitted value at year 0 (use for prediction only)
+        r_squared     -- coefficient of determination (fit quality, 0-1)
+        p_value       -- p-value for the slope (is the trend significant?)
+        std_err       -- standard error of the slope
+        years_n       -- number of data points used in the fit
     """
+    validate_dataframe(
+        regional_ts,
+        ["region", "year", "prevalence_pct"],
+        name="regional_ts (compute_trend_slope)",
+    )
     records = []
     for region, group in regional_ts.groupby("region"):
         group = group.sort_values("year")
@@ -97,7 +107,6 @@ def compute_trend_slope(regional_ts: pd.DataFrame) -> pd.DataFrame:
                 "years_n": len(years),
             }
         )
-
     return pd.DataFrame(records).sort_values("slope_pp_yr", ascending=False)
 
 
@@ -117,6 +126,11 @@ def pivot_regional_trends(regional_ts: pd.DataFrame) -> pd.DataFrame:
     -------
     DataFrame with regions as the index and one column per year.
     """
+    validate_dataframe(
+        regional_ts,
+        ["region", "year", "prevalence_pct"],
+        name="regional_ts (pivot_regional_trends)",
+    )
     return regional_ts.pivot_table(
         index="region",
         columns="year",
@@ -129,9 +143,10 @@ def pivot_measures_by_region(all_trends: pd.DataFrame, year: int) -> pd.DataFram
     """Pivot all measures for a single year into a cross-region comparison.
 
     Produces a table like:
+
         region     obesity  coverage  smoking
-        Midwest      36.0      88.2     17.1
-        West         30.2      87.5     12.4
+        Midwest    36.0     88.2      17.1
+        West       30.2     87.5      12.4
         ...
 
     Parameters
@@ -144,9 +159,13 @@ def pivot_measures_by_region(all_trends: pd.DataFrame, year: int) -> pd.DataFram
 
     Returns
     -------
-    DataFrame with regions as rows and one column per measure,
-    sorted by region name.
+    DataFrame with regions as rows and one column per measure, sorted by region name.
     """
+    validate_dataframe(
+        all_trends,
+        ["region", "year", "measure", "prevalence_pct"],
+        name="all_trends (pivot_measures_by_region)",
+    )
     subset = all_trends[all_trends["year"] == year]
     return subset.pivot_table(
         index="region",
@@ -173,10 +192,15 @@ def compute_rolling_avg(
 
     Returns
     -------
-    Copy of ``regional_ts`` with an extra column ``rolling_avg``
-    containing the centred rolling mean. Rows where the window
-    cannot be fully applied have NaN in ``rolling_avg``.
+    Copy of ``regional_ts`` with an extra column ``rolling_avg`` containing
+    the centred rolling mean. Rows where the window cannot be fully applied
+    have NaN in ``rolling_avg``.
     """
+    validate_dataframe(
+        regional_ts,
+        ["region", "year", "prevalence_pct"],
+        name="regional_ts (compute_rolling_avg)",
+    )
     out = regional_ts.sort_values(["region", "year"]).copy()
     out["rolling_avg"] = (
         out.groupby("region")["prevalence_pct"]
@@ -202,6 +226,11 @@ def compute_convergence(regional_ts: pd.DataFrame) -> pd.DataFrame:
         trend is 'converging' if std decreased from first to last year,
         'diverging' otherwise.
     """
+    validate_dataframe(
+        regional_ts,
+        ["year", "prevalence_pct"],
+        name="regional_ts (compute_convergence)",
+    )
     yearly_std = (
         regional_ts.groupby("year")["prevalence_pct"]
         .agg(lambda vals: float(np.std(vals.to_numpy(), ddof=0)))
@@ -238,9 +267,13 @@ def compare_covid_periods(
 
     Returns
     -------
-    DataFrame with columns:
-        region, pre_avg, post_avg, delta, pct_change
+    DataFrame with columns: region, pre_avg, post_avg, delta, pct_change
     """
+    validate_dataframe(
+        regional_ts,
+        ["region", "year", "prevalence_pct"],
+        name="regional_ts (compare_covid_periods)",
+    )
     pre_df = (
         regional_ts[regional_ts["year"].between(pre[0], pre[1])]
         .groupby("region", as_index=False)["prevalence_pct"]
@@ -275,8 +308,8 @@ def compare_covid_periods_by_measure(
     Parameters
     ----------
     df : DataFrame
-        Long-format DataFrame containing region, year, measure,
-        and prevalence columns.
+        Long-format DataFrame containing region, year, measure, and prevalence
+        columns.
     pre : tuple[int, int]
         Inclusive pre-COVID year window.
     post : tuple[int, int]
@@ -293,30 +326,26 @@ def compare_covid_periods_by_measure(
     Returns
     -------
     DataFrame
-        Columns:
-        measure, region, pre_avg, post_avg, delta, pct_change
+        Columns: measure, region, pre_avg, post_avg, delta, pct_change
     """
-    required_regions = ["Northeast", "Southeast",
-                        "Midwest", "Southwest", "West"]
+    required_regions = ["Northeast", "Southeast", "Midwest", "Southwest", "West"]
     required_measures = ["coverage", "obesity", "smoking"]
 
-    required_cols = {region_col, year_col, measure_col, value_col}
-    missing = required_cols - set(df.columns)
-    if missing:
-        raise ValueError(f"Missing required columns: {sorted(missing)}")
+    validate_dataframe(
+        df,
+        [region_col, year_col, measure_col, value_col],
+        name="df (compare_covid_periods_by_measure)",
+    )
 
     data = df.copy()
-
     data = data[
         data[region_col].isin(required_regions)
         & data[measure_col].isin(required_measures)
     ].copy()
 
     results = []
-
     for measure in required_measures:
         measure_df = data[data[measure_col] == measure].copy()
-
         if measure_df.empty:
             continue
 
@@ -333,18 +362,15 @@ def compare_covid_periods_by_measure(
             pre=pre,
             post=post,
         )
-
         comparison.insert(0, "measure", measure)
         results.append(comparison)
 
     if not results:
         return pd.DataFrame(
-            columns=["measure", "region", "pre_avg",
-                     "post_avg", "delta", "pct_change"]
+            columns=["measure", "region", "pre_avg", "post_avg", "delta", "pct_change"]
         )
 
     final = pd.concat(results, ignore_index=True)
-
     final["region"] = pd.Categorical(
         final["region"],
         categories=required_regions,
@@ -355,6 +381,5 @@ def compare_covid_periods_by_measure(
         categories=required_measures,
         ordered=True,
     )
-
     final = final.sort_values(["measure", "region"]).reset_index(drop=True)
     return final

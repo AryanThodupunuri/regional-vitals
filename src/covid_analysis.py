@@ -2,20 +2,21 @@
 
 Dedicated module for COVID-era trend-shift analysis across U.S. regions.
 
-This module goes beyond the basic pre/post comparison in trend_analysis.py
-and provides a fuller picture of how the COVID-19 pandemic (2020) disrupted
-health trends in obesity, healthcare coverage, and smoking prevalence.
+This module goes beyond the basic pre/post comparison in trend_analysis.py and
+provides a fuller picture of how the COVID-19 pandemic (2020) disrupted health
+trends in obesity, healthcare coverage, and smoking prevalence.
 
 Questions answered:
-- Which regions saw the sharpest acceleration or reversal post-COVID?
-- Did 2020 act as a structural break in the trend for any measure?
-- How quickly did each region recover toward its pre-COVID trajectory?
-- Which measure was most disrupted by COVID across all regions?
-
+    - Which regions saw the sharpest acceleration or reversal post-COVID?
+    - Did 2020 act as a structural break in the trend for any measure?
+    - How quickly did each region recover toward its pre-COVID trajectory?
+    - Which measure was most disrupted by COVID across all regions?
 """
 
 import numpy as np
 import pandas as pd
+
+from src.utils import validate_dataframe
 
 COVID_YEAR = 2020
 PRE_COVID_WINDOW = (2017, 2019)
@@ -40,12 +41,14 @@ def compute_slope(years: np.ndarray, values: np.ndarray) -> float:
     coeffs = np.polyfit(years, values, 1)
     return round(float(coeffs[0]), 4)
 
+
 def compare_trend_slopes(
     regional_ts: pd.DataFrame,
     pre: tuple = PRE_COVID_WINDOW,
     post: tuple = POST_COVID_WINDOW,
 ) -> pd.DataFrame:
     """Compare the trend slope (pp/year) before vs after COVID per region.
+
     A positive slope_shift means the measure is rising faster post-COVID.
     A negative slope_shift means it slowed down or reversed post-COVID.
 
@@ -59,11 +62,11 @@ def compare_trend_slopes(
     -------
     DataFrame with columns: region, pre_slope, post_slope, slope_shift
     """
-    required = {"region", "year", "prevalence_pct"}
-    missing = required - set(regional_ts.columns)
-    if missing:
-        raise ValueError(f"Missing required columns: {sorted(missing)}")
-
+    validate_dataframe(
+        regional_ts,
+        ["region", "year", "prevalence_pct"],
+        name="regional_ts (compare_trend_slopes)",
+    )
     ts = _filter_valid_regions(regional_ts)
     records = []
     for region, group in ts.groupby("region"):
@@ -76,9 +79,7 @@ def compare_trend_slopes(
             if not (np.isnan(pre_slope) or np.isnan(post_slope))
             else float("nan")
         )
-        records.append({"region": region, "pre_slope": pre_slope,
-                        "post_slope": post_slope, "slope_shift": slope_shift})
-
+        records.append({"region": region, "pre_slope": pre_slope, "post_slope": post_slope, "slope_shift": slope_shift})
     if not records:
         return pd.DataFrame(columns=["region", "pre_slope", "post_slope", "slope_shift"])
     return (pd.DataFrame(records)
@@ -92,6 +93,7 @@ def compute_disruption_score(
     post: tuple = POST_COVID_WINDOW,
 ) -> pd.DataFrame:
     """Compute a disruption score for each region based on COVID impact.
+
     Score = abs(delta) + abs(slope_shift) * 10
     Higher score means COVID had a larger measurable effect.
 
@@ -103,21 +105,19 @@ def compute_disruption_score(
 
     Returns
     -------
-    DataFrame with columns:
-        region, pre_avg, post_avg, delta, slope_shift, disruption_score
+    DataFrame with columns: region, pre_avg, post_avg, delta, slope_shift, disruption_score
     """
-    required = {"region", "year", "prevalence_pct"}
-    missing = required - set(regional_ts.columns)
-    if missing:
-        raise ValueError(f"Missing required columns: {sorted(missing)}")
-
+    validate_dataframe(
+        regional_ts,
+        ["region", "year", "prevalence_pct"],
+        name="regional_ts (compute_disruption_score)",
+    )
     ts = _filter_valid_regions(regional_ts)
     pre_avg = (ts[ts["year"].between(pre[0], pre[1])]
                .groupby("region")["prevalence_pct"].mean().rename("pre_avg"))
     post_avg = (ts[ts["year"].between(post[0], post[1])]
                 .groupby("region")["prevalence_pct"].mean().rename("post_avg"))
     slopes = compare_trend_slopes(ts, pre=pre, post=post).set_index("region")
-
     result = pd.concat([pre_avg, post_avg], axis=1).reset_index()
     result.columns = ["region", "pre_avg", "post_avg"]
     result["delta"] = (result["post_avg"] - result["pre_avg"]).round(2)
@@ -138,16 +138,25 @@ def rank_measures_by_disruption(
     Parameters
     ----------
     all_region_ts_by_measure : dict
-        Keys are measure names, values are DataFrames with
-        region, year, prevalence_pct columns.
+        Keys are measure names, values are DataFrames with region, year,
+        prevalence_pct columns.
 
     Returns
     -------
-    DataFrame with columns:
-        measure, avg_disruption_score, max_disruption_region, max_disruption_score
+    DataFrame with columns: measure, avg_disruption_score, max_disruption_region, max_disruption_score
     """
+    if not isinstance(all_region_ts_by_measure, dict):
+        raise TypeError(
+            "all_region_ts_by_measure must be a dict of {measure: DataFrame}, "
+            f"got {type(all_region_ts_by_measure).__name__}"
+        )
     records = []
     for measure, ts in all_region_ts_by_measure.items():
+        validate_dataframe(
+            ts,
+            ["region", "year", "prevalence_pct"],
+            name=f"all_region_ts_by_measure[{measure!r}]",
+        )
         if ts.empty:
             continue
         scores = compute_disruption_score(ts, pre=pre, post=post)
@@ -165,6 +174,7 @@ def rank_measures_by_disruption(
     return (pd.DataFrame(records)
             .sort_values("avg_disruption_score", ascending=False)
             .reset_index(drop=True))
+
 
 def compute_recovery_trajectory(
     regional_ts: pd.DataFrame,
@@ -188,11 +198,11 @@ def compute_recovery_trajectory(
     -------
     DataFrame with columns: region, year, actual, projected, gap
     """
-    required = {"region", "year", "prevalence_pct"}
-    missing = required - set(regional_ts.columns)
-    if missing:
-        raise ValueError(f"Missing required columns: {sorted(missing)}")
-
+    validate_dataframe(
+        regional_ts,
+        ["region", "year", "prevalence_pct"],
+        name="regional_ts (compute_recovery_trajectory)",
+    )
     ts = _filter_valid_regions(regional_ts)
     records = []
     for region, group in ts.groupby("region"):
@@ -216,6 +226,7 @@ def compute_recovery_trajectory(
         return pd.DataFrame(columns=["region", "year", "actual", "projected", "gap"])
     return pd.DataFrame(records).sort_values(["region", "year"]).reset_index(drop=True)
 
+
 def build_covid_summary_table(
     all_region_ts_by_measure: dict,
     pre: tuple = PRE_COVID_WINDOW,
@@ -226,8 +237,8 @@ def build_covid_summary_table(
     Parameters
     ----------
     all_region_ts_by_measure : dict
-        Keys are measure names, values are DataFrames with
-        region, year, prevalence_pct columns.
+        Keys are measure names, values are DataFrames with region, year,
+        prevalence_pct columns.
 
     Returns
     -------
@@ -235,8 +246,18 @@ def build_covid_summary_table(
         measure, region, pre_avg, post_avg, delta, pct_change,
         pre_slope, post_slope, slope_shift, disruption_score
     """
+    if not isinstance(all_region_ts_by_measure, dict):
+        raise TypeError(
+            "all_region_ts_by_measure must be a dict of {measure: DataFrame}, "
+            f"got {type(all_region_ts_by_measure).__name__}"
+        )
     all_frames = []
     for measure, ts in all_region_ts_by_measure.items():
+        validate_dataframe(
+            ts,
+            ["region", "year", "prevalence_pct"],
+            name=f"all_region_ts_by_measure[{measure!r}]",
+        )
         if ts.empty:
             continue
         disruption = compute_disruption_score(ts, pre=pre, post=post)
@@ -251,10 +272,8 @@ def build_covid_summary_table(
         disruption["slope_shift"] = disruption["region"].map(slopes["slope_shift"])
         disruption.insert(0, "measure", measure)
         all_frames.append(disruption)
-
     if not all_frames:
         return pd.DataFrame()
-
     return (
         pd.concat(all_frames, ignore_index=True)
         .sort_values(["measure", "disruption_score"], ascending=[True, False])

@@ -3,10 +3,10 @@
 Compare obesity, coverage, and smoking trends within a single region.
 
 This module answers questions like:
-- How do different health measures trend together over time in one region?
-- Are obesity and coverage correlated at the state level?
-- Which measure changed the most in a given region?
-- What does a region's health profile look like in a snapshot year?
+    - How do different health measures trend together over time in one region?
+    - Are obesity and coverage correlated at the state level?
+    - Which measure changed the most in a given region?
+    - What does a region's health profile look like in a snapshot year?
 
 Author: Aryan Thodupunuri
 """
@@ -15,9 +15,17 @@ import numpy as np
 import pandas as pd
 
 from src.region_mapping import STATE_TO_REGION
+from src.utils import validate_dataframe
 
 # Default measures the project tracks
 DEFAULT_MEASURES = ["obesity", "coverage", "smoking"]
+
+# Columns required for the public entry points. We accept either a 'state'
+# or 'region' column for routing, plus the long-format measure/value/sample_size
+# triple. Each public function calls validate_dataframe at the top so a
+# malformed/renamed CSV produces an immediate, actionable error instead
+# of a silent miscalculation.
+_REQUIRED_LONG_COLS = ["year", "measure", "value", "sample_size"]
 
 
 def _add_region(df: pd.DataFrame) -> pd.DataFrame:
@@ -55,16 +63,16 @@ def compare_measures_over_time(
     -------
     DataFrame with columns: year, measure, prevalence_pct, sample_size_total
     """
+    validate_dataframe(
+        df,
+        _REQUIRED_LONG_COLS,
+        name="df (compare_measures_over_time)",
+    )
     if measures is None:
         measures = DEFAULT_MEASURES
 
     df = _add_region(df)
     region_df = df[df["region"] == region]
-
-    required = ["year", "measure", "value", "sample_size"]
-    missing = [c for c in required if c not in region_df.columns]
-    if missing:
-        raise ValueError(f"DataFrame missing required columns: {missing}")
 
     frames = []
     for m in measures:
@@ -94,11 +102,10 @@ def compute_measure_correlations(
 ) -> pd.DataFrame:
     """Compute pairwise Pearson correlations between measures.
 
-    At the *state* level (default), this answers: "In the West, do states with
-    high obesity also tend to have low coverage?"
-
-    At the *year* level, this answers: "Over time, do obesity and coverage move
-    together in this region?"
+    At the *state* level (default), this answers:
+        "In the West, do states with high obesity also tend to have low coverage?"
+    At the *year* level, this answers:
+        "Over time, do obesity and coverage move together in this region?"
 
     Parameters
     ----------
@@ -111,16 +118,25 @@ def compute_measure_correlations(
     level : {'state', 'year'}
         Aggregation level for the correlation.
         - 'state': average each measure per state across all years, then correlate.
-        - 'year': average each measure per year across states, then correlate.
+        - 'year':  average each measure per year across states, then correlate.
 
     Returns
     -------
-    DataFrame — a correlation matrix (measures × measures).
+    DataFrame -- a correlation matrix (measures x measures).
     """
     if measures is None:
         measures = DEFAULT_MEASURES
     if level not in ("state", "year"):
         raise ValueError(f"level must be 'state' or 'year', got {level!r}")
+
+    required = list(_REQUIRED_LONG_COLS)
+    if level == "state" and "state" not in df.columns and "region" not in df.columns:
+        required.append("state")
+    validate_dataframe(
+        df,
+        required,
+        name="df (compute_measure_correlations)",
+    )
 
     df = _add_region(df)
     region_df = df[df["region"] == region]
@@ -131,14 +147,12 @@ def compute_measure_correlations(
         return pd.DataFrame(index=measures, columns=measures, dtype=float)
 
     sub["weighted"] = sub["value"] * sub["sample_size"]
-
     group_cols = [level, "measure"]
     agg = sub.groupby(group_cols, as_index=False).agg(
         weighted_sum=("weighted", "sum"),
         sample_size_total=("sample_size", "sum"),
     )
     agg["prevalence_pct"] = agg["weighted_sum"] / agg["sample_size_total"]
-
     pivot = agg.pivot_table(
         index=level,
         columns="measure",
@@ -181,14 +195,20 @@ def rank_measure_changes(
         abs_change, pct_change, direction
     Sorted by abs(abs_change) descending.
     """
+    validate_dataframe(
+        df,
+        _REQUIRED_LONG_COLS,
+        name="df (rank_measure_changes)",
+    )
     if measures is None:
         measures = DEFAULT_MEASURES
 
     trends = compare_measures_over_time(df, region, measures)
     if trends.empty:
         return pd.DataFrame(columns=[
-            "measure", "start_year", "end_year", "start_value",
-            "end_value", "abs_change", "pct_change", "direction",
+            "measure", "start_year", "end_year",
+            "start_value", "end_value",
+            "abs_change", "pct_change", "direction",
         ])
 
     records = []
@@ -199,10 +219,8 @@ def rank_measure_changes(
 
         sy = start_year if start_year is not None else int(m_data["year"].min())
         ey = end_year if end_year is not None else int(m_data["year"].max())
-
         start_row = m_data[m_data["year"] == sy]
         end_row = m_data[m_data["year"] == ey]
-
         if start_row.empty or end_row.empty:
             # Fall back to closest available years
             start_row = m_data.iloc[[0]]
@@ -239,12 +257,12 @@ def generate_cross_measure_summary(
     """Generate a comprehensive cross-measure summary for a region.
 
     Returns a dictionary with:
-    - 'snapshot': prevalence for each measure in the given year
-    - 'trends': year-by-year prevalence for all measures
-    - 'correlations': pairwise correlations between measures
-    - 'changes': measures ranked by largest change over the full period
-    - 'region': the region name
-    - 'year': the snapshot year
+        - 'snapshot':      prevalence for each measure in the given year
+        - 'trends':        year-by-year prevalence for all measures
+        - 'correlations':  pairwise correlations between measures
+        - 'changes':       measures ranked by largest change over the full period
+        - 'region':        the region name
+        - 'year':          the snapshot year
 
     Parameters
     ----------
@@ -261,6 +279,11 @@ def generate_cross_measure_summary(
     -------
     dict with keys: region, year, snapshot, trends, correlations, changes.
     """
+    validate_dataframe(
+        df,
+        _REQUIRED_LONG_COLS,
+        name="df (generate_cross_measure_summary)",
+    )
     if measures is None:
         measures = DEFAULT_MEASURES
 
@@ -295,8 +318,8 @@ def compare_all_regions_cross_measure(
 ) -> pd.DataFrame:
     """Build a table of measure values for ALL regions in a given year.
 
-    Rows = regions, columns = measures.  Useful for a quick "which region
-    is highest/lowest on each measure" comparison.
+    Rows = regions, columns = measures.
+    Useful for a quick "which region is highest/lowest on each measure" comparison.
 
     Parameters
     ----------
@@ -311,12 +334,16 @@ def compare_all_regions_cross_measure(
     -------
     DataFrame with one row per region and one column per measure.
     """
+    validate_dataframe(
+        df,
+        _REQUIRED_LONG_COLS,
+        name="df (compare_all_regions_cross_measure)",
+    )
     if measures is None:
         measures = DEFAULT_MEASURES
 
     df = _add_region(df)
     regions = sorted(df["region"].dropna().unique())
-
     frames = []
     for region in regions:
         if region == "Other":
@@ -328,12 +355,9 @@ def compare_all_regions_cross_measure(
 
     if not frames:
         return pd.DataFrame()
-
     combined = pd.concat(frames, ignore_index=True)
-
     if year is None:
         year = int(combined["year"].max())
-
     snapshot = combined[combined["year"] == year]
     return snapshot.pivot_table(
         index="region",
